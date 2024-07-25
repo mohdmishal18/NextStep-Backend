@@ -1,14 +1,23 @@
-import express from "express";
+import express, { Express } from "express";
 
 import dotenv from "dotenv";
+
+//Routes
+import menteeRouter from '../routes/user.route'
 
 // Load environment variables from .env file
 dotenv.config();
 
-const app = express();
+
+// Initialize express application
+const app: Express = express();
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended : false}));
+
+//Mentee Routes
+app.use('/api/mentee',menteeRouter)
+
 
 export default app;
