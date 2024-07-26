@@ -4,7 +4,8 @@ export class MenteePresenter {
     static toResponse(user: IMentee) {
         return {
             name: user.name,
-            email: user.email
+            email: user.email,
+            phone: user.phone
         }
     }
 }

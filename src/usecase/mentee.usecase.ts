@@ -17,7 +17,11 @@ export class MenteeUseCase implements IMenteeUseCase {
         if(existingEmail) {
             throw new Error('User already exists')
         }
-
+        console.log("the data is :", data);
         
+
+        //create new user.
+        const newUser = await this.menteeRepository.save(data)
+        return newUser
     }
 }

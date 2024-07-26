@@ -3,7 +3,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 
 //Routes
-import menteeRouter from '../routes/user.route'
+import menteeRouter from '../routes/mentee.route'
 
 // Load environment variables from .env file
 dotenv.config();

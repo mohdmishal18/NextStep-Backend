@@ -2,14 +2,14 @@ import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository
 import IMentee from "../entities/mentee.entity";
 import { UserModel } from "../frameworks/models/user.model";
 
-export class UserRepository implements IMenteeRepository {
+export class MenteeRepository implements IMenteeRepository {
     async findByEmail(email: string): Promise<IMentee | null> {
         
         const userData = await UserModel.findOne({ email })
         
-        if(!userData) {
-            throw new Error(`User with ${email} not found !`);
-        }
+        // if(!userData) {
+        //     throw new Error(`User with ${email} not found !`);
+        // }
 
         return userData
     }
