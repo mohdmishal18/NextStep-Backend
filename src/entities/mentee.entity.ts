@@ -5,4 +5,6 @@ export default interface IMentee {
     email: string;
     phone: Number;
     password: string;
+    isBlocked?: boolean;
+    isVerified?: boolean
 }

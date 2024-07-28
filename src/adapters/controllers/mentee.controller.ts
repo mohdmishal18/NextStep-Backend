@@ -18,12 +18,6 @@ export class MenteeController {
             const {name , email,phone, password} = req.body;
             console.log("the incoming body", req.body);
 
-            if (!name || !email || !password || !phone) {
-                res.status(400).json({
-                  status: false,
-                  message: "All fields are required",
-                });
-              }
             const user = await this.menteeUseCase.signup({ name , email, phone, password});
             res.status(201).json(MenteePresenter.toResponse(user));
         }
