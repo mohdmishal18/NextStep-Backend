@@ -21,4 +21,17 @@ export class MenteeRepository implements IMenteeRepository {
         
         return newUser;
     }
+
+    async checkUsernameExists(name: string): Promise<Boolean> {
+        const user = await UserModel.findOne({ name: name });
+        return user !== null;
+    }
+
+    async checkEmailExists(email: string): Promise<Boolean> {
+
+        const user = await UserModel.findOne({ email: email });
+
+
+        return user !== null;
+    }
 }

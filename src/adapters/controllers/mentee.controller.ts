@@ -19,10 +19,13 @@ export class MenteeController {
             console.log("the incoming body", req.body);
 
             const user = await this.menteeUseCase.signup({ name , email, phone, password});
-            res.status(201).json(MenteePresenter.toResponse(user));
+            console.log(user, "this is the user in the controller ...")
+            res.status(201).json(MenteePresenter.SignUpRes(user));
         }
-        catch(err) {
-            res.status(400).json({"error in registerring" : err});
+        catch(error) {
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            const errorCode = (error as any).code || 500; // Default to 500 if no code is provided
+            res.status(errorCode).json(MenteePresenter.ErrorRes({ message: errorMessage, code: errorCode }));
         }
     }
 }
