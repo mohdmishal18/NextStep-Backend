@@ -1,11 +1,11 @@
 import IMentee from "../../entities/mentee.entity";
 
 export class MenteePresenter {
-    static SignUpRes(user: IMentee) {
+    static SignUpRes(status: boolean, message: string, email: string) {
         return {
-            name: user.name,
-            email: user.email,
-            phone: user.phone
+            status: status,
+            message: message,
+            email: email
         }
     }
 

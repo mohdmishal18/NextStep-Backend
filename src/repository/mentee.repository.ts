@@ -29,12 +29,9 @@ export class MenteeRepository implements IMenteeRepository {
 
     async saveOtp(email: string, otp: string): Promise<string> {
         try {
-            const expiry = new Date();
-            expiry.setTime(expiry.getTime() + 60000); // Adding 60 seconds
             const newOTP = new OtpModel({
                 email: email,
                 otp: otp,
-                expiry: expiry
             })
             await newOTP.save();
             return otp
@@ -55,9 +52,16 @@ export class MenteeRepository implements IMenteeRepository {
                 throw new Error("Invalid OTP"); // Throw an error if OTP not found
             }
             console.log(otpFound);
-            if (!otpFound.expiry || otpFound.expiry < new Date) {
-                throw new Error("OTP Expired");
+
+            const expirationDuration = 60 * 1000; // 60 seconds in milliseconds
+            const currentTime = Date.now();
+            const otpCreationTime = new Date(otpFound.createdAt).getTime();
+
+            // Check if the OTP is expired
+            if (currentTime - otpCreationTime > expirationDuration) {
+                throw new Error("OTP has expired"); // Throw an error if OTP is expired
             }
+           
             return "OTP verified successfully";
         } catch (error) {
             console.error('Error verifying OTP:', error);
@@ -69,11 +73,11 @@ export class MenteeRepository implements IMenteeRepository {
         try {
             const updatedUser = await UserModel.findOneAndUpdate(
                 { email: email },
-                { $set: { verified: true } },
+                { $set: { otpVerified: true } },
                 { new: true } // Return the modified document
             );
             if (updatedUser) {
-                return updatedUser.toJSON() as IMentee;
+                return updatedUser
             } else {
                 return null;
             }

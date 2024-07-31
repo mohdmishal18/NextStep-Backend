@@ -9,12 +9,8 @@ const OtpSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    expiry:{
-        type:Date,
-        expires:0
-    }
 },{timestamps:true});
 
-OtpSchema.index({ expiry: 1 }, { expireAfterSeconds: 0 });
+OtpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 });
 
 export const OtpModel = mongoose.model("Otp",OtpSchema)

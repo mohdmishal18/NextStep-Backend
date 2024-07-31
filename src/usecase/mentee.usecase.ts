@@ -66,8 +66,10 @@ export class MenteeUseCase implements IMenteeUseCase {
             const OtpVerfication = await this.menteeRepository.verifyOtp(email, otp);
 
             // Verifying User Account after OTP Verification
-            await this.menteeRepository.verifyUserAccount(email)
-            return OtpVerfication;
+            const user = await this.menteeRepository.verifyUserAccount(email)
+            return {
+                OtpVerfication, user
+            }
         } catch (error) {
             console.error("Error verifying OTP:", error);
             throw error;
