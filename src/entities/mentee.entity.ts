@@ -5,6 +5,8 @@ export default interface IMentee {
     email: string;
     phone: Number;
     password: string;
+    profilePicture?: string;
+    coverPicture?: string;
     isBlocked?: boolean;
-    isVerified?: boolean
+    otpVerified?: boolean
 }

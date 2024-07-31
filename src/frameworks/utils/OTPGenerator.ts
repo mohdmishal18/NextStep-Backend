@@ -1,13 +1,15 @@
 import crypto from "crypto"
 
-class OTPGenerator {
-    async generateOtp(length: number): Promise<string> {
+export function generateOtp(length: number) {
         
-        const hexLength = Math.ceil(length / 2);
-        const otp = crypto.randomBytes(hexLength).toString('hex').slice(0, length);
-        return otp
+    // const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const characters = '0123456789';
+    let otp = '';
 
+    for (let i = 0; i < length; i++) {
+        const index = Math.floor(Math.random() * characters.length);
+        otp += characters[index];
     }
-}
 
-export default OTPGenerator;
+    return otp;
+}

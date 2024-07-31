@@ -12,6 +12,5 @@ const menteeController = new MenteeController(menteeUseCase)
 
 router.post('/signup',(req, res) => menteeController.signup(req, res))
 
-
-
+router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 export default router
