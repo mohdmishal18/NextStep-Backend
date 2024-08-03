@@ -1,5 +1,5 @@
 import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository";
-import IMentee from "../entities/mentee.entity";
+import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
 import { UserModel } from "../frameworks/models/user.model";
 import { OtpModel } from "../frameworks/models/otp.model";
 
@@ -7,7 +7,7 @@ import { OtpModel } from "../frameworks/models/otp.model";
 export class MenteeRepository implements IMenteeRepository {
 
 
-    async save(user: IMentee): Promise<IMentee> {
+    async save(user: IRegisterMentee): Promise<IRegisterMentee> {
 
         const userData = new UserModel(user);
         const newUser = await userData.save();
@@ -17,15 +17,13 @@ export class MenteeRepository implements IMenteeRepository {
 
     async checkUsernameExists(name: string): Promise<Boolean> {
         const user = await UserModel.findOne({ name: name });
-        return user !== null;
+        return user !== null
     }
 
-    async checkEmailExists(email: string): Promise<Boolean> {
+    async checkEmailExists(email: string): Promise<IMentee|null> {
 
-        const user = await UserModel.findOne({ email: email });
+        return await UserModel.findOne({ email: email });
 
-
-        return user !== null;
     }
 
     async saveOtp(email: string, otp: string): Promise<string> {

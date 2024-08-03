@@ -1,23 +1,30 @@
 import bcrypt from 'bcrypt'
 
 import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository";
-import IMentee from "../entities/mentee.entity";
+import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
 import { IMenteeUseCase } from "../interfaces/usecase/IMentee.usercase";
 import { sendEmail } from "../frameworks/utils/emailService";
 import { generateOtp } from '../frameworks/utils/OTPGenerator';
 import { generateOtpHtml } from '../frameworks/utils/otpTemplate';
 import { ErrorCode } from "../enums/errorCodes";
 
+import IjwtService from '../interfaces/utils/jwtService';
+
 export class MenteeUseCase implements IMenteeUseCase {
     
     private menteeRepository: IMenteeRepository;
+    private jwtService: IjwtService
 
-    constructor(menteeRepository: IMenteeRepository) {
+    constructor(
+        menteeRepository: IMenteeRepository,
+        jwtService: IjwtService
+    ) {
         
         this.menteeRepository = menteeRepository;
+        this.jwtService = jwtService;
     }
 
-    async signup(data: IMentee): Promise<IMentee> {
+    async signup(data: IRegisterMentee): Promise<IRegisterMentee> {
         
         try {
 
@@ -69,9 +76,25 @@ export class MenteeUseCase implements IMenteeUseCase {
 
             // Verifying User Account after OTP Verification
             const user = await this.menteeRepository.verifyUserAccount(email)
-            return {
-                OtpVerfication, user
+            if(user) {
+                let payload = {
+                    userId: user._id,
+                    name: user.name,
+                    role: user.role
+                }
+
+                let token = this.jwtService.generateToken(payload)
+                let refreshToken = this.jwtService.generateRefreshToken(payload)
+
+                return {
+                    status: true,
+                    OtpVerfication,
+                    user,
+                    token,
+                    refreshToken
+                }
             }
+
         } catch (error) {
             console.error("Error verifying OTP:", error);
             throw error;

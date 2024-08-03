@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
@@ -28,8 +29,10 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/nodemailer": "^6.4.15",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
     "express": "^4.19.2",
+    "google-auth-library": "^9.13.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.1",
     "nodemailer": "^6.9.14"

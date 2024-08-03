@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 import IMentee from "../../entities/mentee.entity";
+import { deflate } from "zlib";
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -23,6 +24,10 @@ const UserSchema = new mongoose.Schema({
     isBlocked: {
         type: Boolean,
         default: false
+    },
+    role: {
+        type: String,
+        default: "mentee"
     },
     otpVerified: {
         type: Boolean,

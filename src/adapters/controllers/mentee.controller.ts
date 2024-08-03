@@ -18,7 +18,7 @@ export class MenteeController {
             const {name , email,phone, password} = req.body;
             console.log("the incoming body", req.body);
 
-            const user = await this.menteeUseCase.signup({ name , email, phone, password});
+            const user = await this.menteeUseCase.signup({ name , email, phone, password, role: "mentee"});
             console.log(user, "this is the user in the controller ...")
             res.cookie("otpEmail", email, { maxAge: 3600000 });
             res.status(201).json(MenteePresenter.SignUpRes(true, "User created and OTP sent successfully", user.email));
@@ -36,9 +36,20 @@ export class MenteeController {
             if(!body?.email || !body?.otp){
                 throw new Error("Missing Data (email or OTP")
             }
-            const message = await this.menteeUseCase.verifyOtp(body.email,body.otp);
-            console.log("this is the message from verifyotp in the controller.,", message)
-            res.status(200).json({ status: 'success', message: message.OtpVerfication, user: message.user });
+            const response = await this.menteeUseCase.verifyOtp(body.email,body.otp);
+
+            if(!response?.status) {
+                res.status(401).json(response);
+                return;
+            }
+
+            res.cookie("menteeAccessToken", response.token, { httpOnly: true, maxAge: 1800000 }).cookie("menteeRefreshToken", response.refreshToken, {
+                httpOnly: true,
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+            })
+        
+            console.log("this is the message from verifyotp in the controller.,", response)
+            res.status(200).json(response);
         } catch (error) {
             console.log(error)
         }
