@@ -1,7 +1,7 @@
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
 // Function to send email
-async function sendEmail(to: string, subject: string, text: string) {
+async function sendEmail(to: string, subject: string, text: string, html: string) {
     // Compose email message
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -10,13 +10,13 @@ async function sendEmail(to: string, subject: string, text: string) {
             pass: process.env.PASS 
         }
     });
-    console.log(to,subject,text);
     
     const mailOptions = {
         from: process.env.EMAIL,
         to: to,
         subject: subject,
-        text: text
+        text: text, // Plain text fallback
+        html: html  // HTML content
     };
 
     // Send email
@@ -29,5 +29,4 @@ async function sendEmail(to: string, subject: string, text: string) {
     }
 }
 
-
-export{sendEmail}
+export { sendEmail };

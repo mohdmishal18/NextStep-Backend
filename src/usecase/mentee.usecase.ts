@@ -5,6 +5,7 @@ import IMentee from "../entities/mentee.entity";
 import { IMenteeUseCase } from "../interfaces/usecase/IMentee.usercase";
 import { sendEmail } from "../frameworks/utils/emailService";
 import { generateOtp } from '../frameworks/utils/OTPGenerator';
+import { generateOtpHtml } from '../frameworks/utils/otpTemplate';
 import { ErrorCode } from "../enums/errorCodes";
 
 export class MenteeUseCase implements IMenteeUseCase {
@@ -51,9 +52,10 @@ export class MenteeUseCase implements IMenteeUseCase {
         try {
             // Generate OTP
             const otp = generateOtp(6);
+            const html = generateOtpHtml(otp)
             // Save OTP to the repository
             await this.menteeRepository.saveOtp(email, otp);
-            await sendEmail(email, subject, `Your OTP is: ${otp}`);
+            await sendEmail(email, subject, `Your OTP is: ${otp}`,html );
             return
         } catch (error) {
             throw new Error(ErrorCode.FAILED_SENDING_OTP);
@@ -75,4 +77,19 @@ export class MenteeUseCase implements IMenteeUseCase {
             throw error;
         }
     }
+
+  async resendOtp(email: string) {
+    try {
+      const user = await this.menteeRepository.checkEmailExists(email);
+      if (user) {
+        await this.sendOtpByEmail(email, "NextStep:Verify Account");
+        return "resendOtp successfull";
+      }
+      return "invalid email";
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
 }

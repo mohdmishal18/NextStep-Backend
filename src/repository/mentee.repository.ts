@@ -6,6 +6,7 @@ import { OtpModel } from "../frameworks/models/otp.model";
 
 export class MenteeRepository implements IMenteeRepository {
 
+
     async save(user: IMentee): Promise<IMentee> {
 
         const userData = new UserModel(user);
@@ -29,6 +30,7 @@ export class MenteeRepository implements IMenteeRepository {
 
     async saveOtp(email: string, otp: string): Promise<string> {
         try {
+            await OtpModel.deleteMany({ email });
             const newOTP = new OtpModel({
                 email: email,
                 otp: otp,

@@ -20,6 +20,7 @@ export class MenteeController {
 
             const user = await this.menteeUseCase.signup({ name , email, phone, password});
             console.log(user, "this is the user in the controller ...")
+            res.cookie("otpEmail", email, { maxAge: 3600000 });
             res.status(201).json(MenteePresenter.SignUpRes(true, "User created and OTP sent successfully", user.email));
         }
         catch(error) {
@@ -42,5 +43,16 @@ export class MenteeController {
             console.log(error)
         }
     }
+
+    async resendOtp(req: Request, res: Response) {
+        try {
+          const response = await this.menteeUseCase.resendOtp(req.body.email);
+          if (response == "resendOtp successfull") {
+            res.json({ status: true });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
 }
