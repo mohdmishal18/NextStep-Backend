@@ -14,16 +14,20 @@ import { UserModel } from '../models/user.model'
 
 //utils
 import JwtToken from '../utils/jwtService'
+import HashingService from '../utils/hashingService'
 
 const router = express.Router()
 
 const jwtService = new JwtToken();
+const hashingService = new HashingService();
 
 const menteeRepository = new MenteeRepository()
-const menteeUseCase = new MenteeUseCase(menteeRepository, jwtService)
+const menteeUseCase = new MenteeUseCase(menteeRepository, jwtService, hashingService)
 const menteeController = new MenteeController(menteeUseCase)
 
 router.post('/signup',(req, res) => menteeController.signup(req, res))
+router.post('/signin',(req,res) =>menteeController.login(req,res))
+router.post('/logout',(req,res) => menteeController.logout(req,res))
 router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
 

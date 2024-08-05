@@ -6,7 +6,9 @@ export default interface IMentee {
     email: string;
     phone: Number;
     password: string;
-    role: string
+    role: string;
+    education: string
+    bio: string;
     profilePicture?: string;
     coverPicture?: string;
     isBlocked?: boolean;

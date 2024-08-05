@@ -29,6 +29,61 @@ export class MenteeController {
         }
     }
 
+    async login(req: Request, res: Response) {
+        try {
+          const { email, password } = req.body;
+          const data = {
+            email,
+            password,
+          };
+    
+          const response = await this.menteeUseCase.loginAuthentication(data);
+
+          if (response?.status && response.message == "Login Succesfully") {
+            const { token, refreshToken } = response;
+            res.cookie("menteeAccessToken", token, {
+              httpOnly: true,
+              maxAge: 360000,
+            }).cookie("menteeRefreshToken", refreshToken, {
+              httpOnly: true,
+              maxAge: 30 * 24 * 60 * 60 * 1000,
+            })
+            res.status(200).json({ status: true, message: "Login Succesfully", user: response.user });
+          } else if (
+            !response?.status &&
+            response?.message == "otp is not verified"
+          ) {
+            res.cookie("otpEmail", email, { maxAge: 3600000 });
+            res.status(403).json({ otpVerified: "false" });
+          } else if (
+            !response?.status &&
+            response?.message == "this user is blocked"
+          ) {
+            res.status(403).json({ message: "this user is blocked" });
+          } else if (response?.status) {
+            res.status(200).json(response);
+          } else if (
+            !response?.status &&
+            response?.message == "incorrect password"
+          ) {
+            res.status(403).json(response);
+          } else {
+            res.status(403).json(response);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      async logout(req: Request, res: Response) {
+        try {
+          res.cookie("menteeAccessToken", "", { httpOnly: true, expires: new Date() }).cookie("menteeRefreshToken", "", { httpOnly: true, expires: new Date() })
+          res.status(200).json({ status: true });
+        } catch (error) {
+          res.json(error);
+        }
+      }
+
     async verifyOtp(req: Request, res: Response){
         try {
             const body = req.body;
@@ -42,7 +97,7 @@ export class MenteeController {
                 return;
             }
 
-            res.cookie("menteeAccessToken", response.token, { httpOnly: true, maxAge: 1800000 }).cookie("menteeRefreshToken", response.refreshToken, {
+            res.cookie("menteeAccessToken", response.token, { httpOnly: true, maxAge: 360000 }).cookie("menteeRefreshToken", response.refreshToken, {
                 httpOnly: true,
                 maxAge: 30 * 24 * 60 * 60 * 1000,
             })
