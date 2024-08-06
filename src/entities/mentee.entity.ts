@@ -22,3 +22,11 @@ export interface IRegisterMentee {
     password: string;
     role: string
 }
+
+export interface editMenteeDetails {
+    fullName: string;
+    email: string;
+    phone: string;
+    education: string;
+    bio: string;
+}

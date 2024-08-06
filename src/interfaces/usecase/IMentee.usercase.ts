@@ -5,6 +5,12 @@ export interface loginBody {
     password: string
   }
 
+  export interface updateUser{
+    status:boolean,
+    message:string,
+    user ?: IMentee
+  }
+
   export interface loginRes {
     status:boolean
     message : string
@@ -13,12 +19,22 @@ export interface loginBody {
     user?:IMentee
   }
 
+  interface editDetails {
+    fullName: string;
+    phone: string;
+    email: string;
+    education: string;
+    bio: string;
+  }
+
 export interface IMenteeUseCase {
     signup(data: IRegisterMentee): Promise<IRegisterMentee>
     verifyOtp(email: string, otp: string): any
     resendOtp(email:string):Promise<string|null>
     sendOtpByEmail(email: string, subject: string): any
     loginAuthentication(data:loginBody):Promise<loginRes|null>
+    updateUser(email: string, profilePic: string, coverPic: string):Promise<updateUser|null>
+    editDetails(name: string,phone: string,bio: string,education: string,email: string):Promise<updateUser|null>
 }
 
   

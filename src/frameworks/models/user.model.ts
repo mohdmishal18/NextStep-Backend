@@ -21,6 +21,22 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    bio: {
+        type: String,
+        required: true
+    },
+    education: {
+        type: String,
+        required: true
+    },
+    profilePicture: {
+        type: String,
+        reqiured: true
+    },
+    coverPicture: {
+        type: String,
+        reqired: true
+    },
     isBlocked: {
         type: Boolean,
         default: false

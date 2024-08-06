@@ -2,7 +2,7 @@ import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository
 import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
 import { UserModel } from "../frameworks/models/user.model";
 import { OtpModel } from "../frameworks/models/otp.model";
-
+import { editMenteeDetails } from "../entities/mentee.entity";
 
 export class MenteeRepository implements IMenteeRepository {
 
@@ -83,6 +83,37 @@ export class MenteeRepository implements IMenteeRepository {
             }
         } catch (error) {
             throw error
+        }
+    }
+
+    async updateUser(email: string, profilePic: string, coverPic: string): Promise<IMentee | null> {
+        try {
+            return await UserModel.findOneAndUpdate(
+                { email: email }, // Query to find user by email
+                { $set: { profilePicture: profilePic, coverPicture: coverPic } }, // Fields to update
+                { new: true } // Return the updated document
+              ).exec();
+        } catch (error) {
+          throw new Error("Failed to update user");
+        }
+      }
+
+      async editDetails(name: string,phone: string,bio: string,education: string,email: string): Promise<IMentee | null> {
+        try {
+            console.log("Data received in the repository:", name);
+    
+            const updatedUser = await UserModel.findOneAndUpdate(
+                { email: email }, // Query to find user by email
+                { $set: { name: name, phone: phone, education: education, bio: bio } }, // Fields to update
+                { new: true } // Return the updated document
+            ).exec();
+    
+            console.log("Updated user in the repository:", updatedUser);
+    
+            return updatedUser;
+        } catch (error) {
+            console.error("Error in repository:", error);
+            throw new Error("Failed to update user");
         }
     }
 }

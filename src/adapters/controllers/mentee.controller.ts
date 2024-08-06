@@ -120,4 +120,36 @@ export class MenteeController {
         }
       }
 
+
+      async updateUser(req: Request, res: Response) {
+        try {
+        const { email , profilePic, coverPic} = req.body
+        console.log("data in the controller", req.body)
+        const response = await this.menteeUseCase.updateUser(email , profilePic, coverPic)
+        res.status(200).json(response)
+        } catch (error) {
+        console.log(error);
+        }
+      }
+
+      async editDetails(req: Request, res: Response) {
+        try {
+            const { name,
+              phone,
+              bio,
+              education,
+              email
+            } = req.body;
+            console.log("Data received in the controller:", req.body);
+    
+            const response = await this.menteeUseCase.editDetails(name,phone,email,education,bio);
+            console.log("Response from use case:", response);
+    
+            res.status(200).json(response);
+        } catch (error) {
+            console.error("Error in controller:", error);
+            res.status(500).json({ status: false, message: "Internal server error" });
+        }
+    }
+
 }

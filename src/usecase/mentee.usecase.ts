@@ -8,6 +8,7 @@ import { generateOtp } from '../frameworks/utils/OTPGenerator';
 import { generateOtpHtml } from '../frameworks/utils/otpTemplate';
 import { ErrorCode } from "../enums/errorCodes";
 import { loginBody } from '../interfaces/usecase/IMentee.usercase';
+import { editMenteeDetails } from '../entities/mentee.entity';
 
 import IjwtService from '../interfaces/utils/jwtService';
 import IhashingService from '../interfaces/utils/hashingService'; 
@@ -108,7 +109,7 @@ export class MenteeUseCase implements IMenteeUseCase {
 
         let token = this.jwtService.generateToken(payload)
         let refreshToken = this.jwtService.generateRefreshToken(payload)
-        
+
         return { status: true, message: "Login Succesfully", user: value, token, refreshToken };
       }
       return { status: false, message: "Email Not found" };
@@ -179,5 +180,39 @@ export class MenteeUseCase implements IMenteeUseCase {
       return null;
     }
   }
+
+  async updateUser(email: string, profilePic: string, coverPic: string) {
+    try {
+      const response = await this.menteeRepository.updateUser(email, profilePic, coverPic)
+      console.log("res in the use case", response);
+      
+      if (response) {
+        return { status: true, message: "user updated successfully", user: response }
+      }
+      return { status: false, message: "failed try again" }
+    } catch (error) {
+      console.log(error);
+      return null
+    }
+  }
+
+  async editDetails(
+    name: string,phone: string,bio: string,education: string,email: string
+  ) {
+    try {
+        console.log("Data received in the use case:", name);
+
+        const response = await this.menteeRepository.editDetails(name,phone,email,education,bio);
+        console.log("Response from repository:", response);
+
+        if (response) {
+            return { status: true, message: "User updated successfully", user: response };
+        }
+        return { status: false, message: "Failed to update user, please try again" };
+    } catch (error) {
+        console.error("Error in use case:", error);
+        return { status: false, message: "Internal server error" };
+    }
+}
 
 }
