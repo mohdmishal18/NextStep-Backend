@@ -27,9 +27,16 @@ export interface loginBody {
     bio: string;
   }
 
+  export interface googleLoginData{
+    name:string
+    email:string
+    image:string
+  }
+
 export interface IMenteeUseCase {
     signup(data: IRegisterMentee): Promise<IRegisterMentee>
     verifyOtp(email: string, otp: string): any
+    GoogleLogin(data:googleLoginData):Promise<loginRes|null>
     resendOtp(email:string):Promise<string|null>
     sendOtpByEmail(email: string, subject: string): any
     loginAuthentication(data:loginBody):Promise<loginRes|null>

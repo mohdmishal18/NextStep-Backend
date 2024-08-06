@@ -96,9 +96,9 @@ export class MenteeRepository implements IMenteeRepository {
         } catch (error) {
           throw new Error("Failed to update user");
         }
-      }
+    }
 
-      async editDetails(name: string,phone: string,bio: string,education: string,email: string): Promise<IMentee | null> {
+    async editDetails(name: string,phone: string,bio: string,education: string,email: string): Promise<IMentee | null> {
         try {
             console.log("Data received in the repository:", name);
     

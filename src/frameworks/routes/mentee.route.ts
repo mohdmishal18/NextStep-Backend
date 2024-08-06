@@ -16,6 +16,9 @@ import { UserModel } from '../models/user.model'
 import JwtToken from '../utils/jwtService'
 import HashingService from '../utils/hashingService'
 
+//auth
+import menteeAuth from '../middlewares/mentee.auth'
+
 const router = express.Router()
 
 const jwtService = new JwtToken();
@@ -27,12 +30,14 @@ const menteeController = new MenteeController(menteeUseCase)
 
 router.post('/signup',(req, res) => menteeController.signup(req, res))
 router.post('/signin',(req,res) =>menteeController.login(req,res))
+router.post("/google-login", menteeController.googleLogin);
 router.post('/logout',(req,res) => menteeController.logout(req,res))
 router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
 
-router.post('/edit-picture',(req,res) => menteeController.updateUser(req,res))
-router.post('/edit-details',(req,res) => menteeController.editDetails(req, res))
+router.post('/edit-picture',menteeAuth,(req,res) => menteeController.updateUser(req,res))
+router.post('/edit-details',menteeAuth,(req,res) => menteeController.editDetails(req, res))
+
 
 
 export default router

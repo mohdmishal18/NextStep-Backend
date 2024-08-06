@@ -10,6 +10,7 @@ import { ErrorCode } from "../enums/errorCodes";
 import { loginBody } from '../interfaces/usecase/IMentee.usercase';
 import { editMenteeDetails } from '../entities/mentee.entity';
 
+import { googleLoginData } from '../interfaces/usecase/IMentee.usercase';
 import IjwtService from '../interfaces/utils/jwtService';
 import IhashingService from '../interfaces/utils/hashingService'; 
 
@@ -213,6 +214,25 @@ export class MenteeUseCase implements IMenteeUseCase {
         console.error("Error in use case:", error);
         return { status: false, message: "Internal server error" };
     }
+}
+
+// googleLogin
+async GoogleLogin(data: googleLoginData) {
+  let user = await this.menteeRepository.checkEmailExists(data.email);
+  if (!user) {
+    return { status: false, message: "please register to login" };
+  }
+  const loginUser = await this.menteeRepository.checkEmailExists(data.email);
+
+  let payload = {
+    userId: loginUser?._id as string,
+    name: loginUser?.name as string,
+    role: "mentee",
+  };
+
+  const token = this.jwtService.generateToken(payload);
+  const refreshToken = this.jwtService.generateRefreshToken(payload)
+  return { status: true, message: "google Login succesfull", token, refreshToken, loginUser };
 }
 
 }

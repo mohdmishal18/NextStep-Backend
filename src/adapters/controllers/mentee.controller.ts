@@ -1,4 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
+
 
 import { IMenteeUseCase } from "../../interfaces/usecase/IMentee.usercase";
 import { MenteePresenter } from "../presenters/mentee.presenter";
@@ -9,6 +12,7 @@ export class MenteeController {
 
     constructor(menteeUseCase: IMenteeUseCase) {
         this.menteeUseCase = menteeUseCase
+        this.googleLogin = this.googleLogin.bind(this)
     }
 
     async signup(req: Request, res: Response) {
@@ -151,5 +155,35 @@ export class MenteeController {
             res.status(500).json({ status: false, message: "Internal server error" });
         }
     }
+
+    async googleLogin(
+      req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+      res: Response<any, Record<string, any>>
+    ) {
+      const { name, email, image } = req.body;
+      console.log(req.body, "the google datas");
+      
+      const data = {
+        name,
+        email,
+        image,
+      };
+      const response = await this.menteeUseCase.GoogleLogin(data)
+
+      if (response?.status && response?.message == "google Login succesfull") {
+        const { token, refreshToken } = response;
+        res.cookie("menteeAccessToken", token, {
+          httpOnly: true,
+          maxAge: 360000,
+        }).cookie("menteeRefesehToken", refreshToken, {
+          httpOnly: true,
+          maxAge: 30 * 24 * 60 * 60 * 1000
+        })
+        return res.status(200).json(response);
+      } else {
+        return res.status(403).json(response)
+      }
+    }
+  
 
 }
