@@ -10,7 +10,8 @@ import { MenteeUseCase } from '../../usecase/mentee.usecase'
 
 //models
 import { OtpModel } from '../models/otp.model'
-import { UserModel } from '../models/user.model'
+import UserModel from '../models/user.model'
+import Users from '../models/user.model'
 
 //utils
 import JwtToken from '../utils/jwtService'
@@ -24,7 +25,7 @@ const router = express.Router()
 const jwtService = new JwtToken();
 const hashingService = new HashingService();
 
-const menteeRepository = new MenteeRepository()
+const menteeRepository = new MenteeRepository(Users)
 const menteeUseCase = new MenteeUseCase(menteeRepository, jwtService, hashingService)
 const menteeController = new MenteeController(menteeUseCase)
 
@@ -35,8 +36,8 @@ router.post('/logout',(req,res) => menteeController.logout(req,res))
 router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
 
-router.post('/edit-picture',menteeAuth,(req,res) => menteeController.updateUser(req,res))
-router.post('/edit-details',menteeAuth,(req,res) => menteeController.editDetails(req, res))
+router.post('/edit-picture',(req,res) => menteeController.updateUser(req,res))
+router.post('/edit-details',(req,res) => menteeController.editDetails(req, res))
 
 
 

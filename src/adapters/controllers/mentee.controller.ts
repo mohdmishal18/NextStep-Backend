@@ -130,6 +130,8 @@ export class MenteeController {
         const { email , profilePic, coverPic} = req.body
         console.log("data in the controller", req.body)
         const response = await this.menteeUseCase.updateUser(email , profilePic, coverPic)
+        console.log(response, "res in the controller");
+        
         res.status(200).json(response)
         } catch (error) {
         console.log(error);

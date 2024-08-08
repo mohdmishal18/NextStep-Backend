@@ -1,17 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import JwtToken from "../utils/jwtService";
 import { MenteeRepository } from "../../repository/mentee.repository";
+import UserModel from "../models/user.model";
 
 
 const jwtService = new JwtToken()
-const userRepo = new MenteeRepository()
+const userRepo = new MenteeRepository(UserModel)
 
 interface IAuthRequest extends Request {
   userId?: string;
 }
 
 const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) => {
-  const refreshToken = req.cookies.userRefreshToken
+  const refreshToken = req.cookies.menteeRefreshToken
   let menteeAccessToken = req.cookies.menteeAccessToken;
 
   if (!refreshToken) {
@@ -27,35 +28,37 @@ const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) 
         maxAge: 1800000,
       })
       menteeAccessToken = newMenteeAccessToken
+       next()
     } catch (error) {
       return res
         .status(401)
         .json({ message: "Failed to refresh access token" });
     }
+   
   }
 
-  try {
-    const decoded = jwtService.verfiyToken(menteeAccessToken)
-    let user;
-    if (decoded) {
-      user = await userRepo.checkEmailExists(decoded.userId)
-    }
+  // try {
+  //   const decoded = jwtService.verfiyToken(menteeAccessToken)
+  //   let user;
+  //   if (decoded) {
+  //     user = await userRepo.checkEmailExists(decoded.userId)
+  //   }
 
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
-    }
+  //   if (!user) {
+  //     return res.status(401).json({ message: "User not found" });
+  //   }
 
-    if (user.isBlocked) {      
-      return res.status(401).json({ message: "You are blocked by admin!" });
-    }
+  //   if (user.isBlocked) {      
+  //     return res.status(401).json({ message: "You are blocked by admin!" });
+  //   }
 
-    if (decoded?.role != 'mentee') {
-      return res.status(401).json({ message: "Not authorized, invalid role" });
-    }
-    next()
-  } catch (error) {
-    return res.status(401).json({ message: "Not authorized, invalid token" });
-  }
+  //   if (decoded?.role != 'mentee') {
+  //     return res.status(401).json({ message: "Not authorized, invalid role" });
+  //   }
+  //   next()
+  // } catch (error) {
+  //   return res.status(401).json({ message: "Not authorized, invalid token" });
+  // }
 
 }
 

@@ -126,6 +126,8 @@ export class MenteeUseCase implements IMenteeUseCase {
         try {
             // Generate OTP
             const otp = generateOtp(6);
+            console.log(otp, "otp for the user")
+            
             const html = generateOtpHtml(otp)
             // Save OTP to the repository
             await this.menteeRepository.saveOtp(email, otp);
@@ -189,8 +191,11 @@ export class MenteeUseCase implements IMenteeUseCase {
       
       if (response) {
         return { status: true, message: "user updated successfully", user: response }
+      }else
+      {
+        return { status: false, message: "failed try again" }
       }
-      return { status: false, message: "failed try again" }
+      
     } catch (error) {
       console.log(error);
       return null

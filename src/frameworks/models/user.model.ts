@@ -23,11 +23,9 @@ const UserSchema = new mongoose.Schema({
     },
     bio: {
         type: String,
-        required: true
     },
     education: {
         type: String,
-        required: true
     },
     profilePicture: {
         type: String,
@@ -51,4 +49,5 @@ const UserSchema = new mongoose.Schema({
     }
 })
 
-export const UserModel = mongoose.model<IMentee>('Users',UserSchema)
+const UserModel = mongoose.model<IMentee>('Users',UserSchema)
+export default UserModel

@@ -1,11 +1,18 @@
+import { Model } from "mongoose";
 import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository";
 import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
-import { UserModel } from "../frameworks/models/user.model";
+import UserModel from "../frameworks/models/user.model";
 import { OtpModel } from "../frameworks/models/otp.model";
 import { editMenteeDetails } from "../entities/mentee.entity";
 
 export class MenteeRepository implements IMenteeRepository {
 
+    private user: Model<IMentee>;
+    constructor(
+        user: Model<IMentee>,
+    ){
+        this.user = user;
+    }
 
     async save(user: IRegisterMentee): Promise<IRegisterMentee> {
 

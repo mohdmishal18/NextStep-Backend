@@ -1,10 +1,13 @@
 import express, { Express } from "express";
 import cors from 'cors'
 import logger from 'morgan'
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 //Routes
 import menteeRouter from '../routes/mentee.route'
+import mentorRouter from '../routes/mentor.route'
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -20,6 +23,10 @@ app.use(
     })
 )
 
+// Cookie Parser
+app.use(cookieParser());
+
+
 //morgan
 app.use(logger('dev'))
 
@@ -29,5 +36,6 @@ app.use(express.urlencoded({extended : false}));
 
 //Mentee Routes
 app.use('/api/mentee',menteeRouter)
+app.use('/api/mentor',mentorRouter)
 
 export default app;
