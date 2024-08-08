@@ -11,7 +11,7 @@ export default interface IMentee {
     bio: string;
     profilePicture?: string;
     coverPicture?: string;
-    isBlocked?: boolean;
+    isBlocked: boolean;
     otpVerified?: boolean
 }
 

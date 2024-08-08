@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Router } from 'express'
 //controller
 import { MenteeController } from '../../adapters/controllers/mentee.controller'
 
@@ -20,7 +20,7 @@ import HashingService from '../utils/hashingService'
 //auth
 import menteeAuth from '../middlewares/mentee.auth'
 
-const router = express.Router()
+const router: Router = express.Router()
 
 const jwtService = new JwtToken();
 const hashingService = new HashingService();

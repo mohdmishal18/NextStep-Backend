@@ -1,0 +1,49 @@
+import { Request, Response, NextFunction } from "express";
+
+import IAdminController from "../../interfaces/controller/IAdmin.controller";
+import IAdminUsecase from "../../interfaces/usecase/IAdmin.usecase";
+
+export default class AdminController implements IAdminController {
+    
+    private adminUsecase;
+
+    constructor(adminUsecase: IAdminUsecase) {
+        this.adminUsecase = adminUsecase;
+        this.login = this.login.bind(this)
+    }
+
+    async login(req: Request, res: Response): Promise<void> {
+        
+        try {
+            
+            const { email , password } = req.body
+            
+            const response = await this.adminUsecase.login(email , password)
+            
+            if(response?.message === 'Invalid Email') {
+                res.status(403).json({ message: 'Invalid Email'})
+            }
+
+            if(response?.message === 'Incorrect Password') {
+                res.status(403).json({ message: 'Incorrect Password' })
+            }
+
+            if(response?.message === 'Login Successfull') {
+                res.cookie('adminAccessToken' , response.adminAccessToken, {
+                    httpOnly: true,
+                    maxAge: 3600000
+                })
+                .cookie('adminRefreshToken', response.adminRefreshToken, {
+                    httpOnly: true,
+                    maxAge: 30 * 24 * 60 * 60 * 1000
+                })
+
+                res.status(200).json({ message: 'Login Successfull' })
+                console.log('log in success')
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}

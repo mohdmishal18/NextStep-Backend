@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 //Routes
 import menteeRouter from '../routes/mentee.route'
 import mentorRouter from '../routes/mentor.route'
+import adminRouter from '../routes/admin.route'
 
 
 // Load environment variables from .env file
@@ -37,5 +38,6 @@ app.use(express.urlencoded({extended : false}));
 //Mentee Routes
 app.use('/api/mentee',menteeRouter)
 app.use('/api/mentor',mentorRouter)
+app.use('/api/admin',adminRouter)
 
 export default app;

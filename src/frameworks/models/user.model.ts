@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 import IMentee from "../../entities/mentee.entity";
-import { deflate } from "zlib";
 
 const UserSchema = new mongoose.Schema({
     name: {
