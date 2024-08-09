@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import IAdminController from "../../interfaces/controller/IAdmin.controller";
 import IAdminUsecase from "../../interfaces/usecase/IAdmin.usecase";
-
+import { CommonCode } from "../../enums/commonCodes";
 export default class AdminController implements IAdminController {
     
     private adminUsecase;
@@ -29,11 +29,11 @@ export default class AdminController implements IAdminController {
             }
 
             if(response?.message === 'Login Successfull') {
-                res.cookie('adminAccessToken' , response.adminAccessToken, {
+                res.cookie(CommonCode.ADMIN_ACCESS_TOKEN , response.adminAccessToken, {
                     httpOnly: true,
                     maxAge: 3600000
                 })
-                .cookie('adminRefreshToken', response.adminRefreshToken, {
+                .cookie(CommonCode.ADMIN_REFRESH_TOKEN, response.adminRefreshToken, {
                     httpOnly: true,
                     maxAge: 30 * 24 * 60 * 60 * 1000
                 })
@@ -41,6 +41,18 @@ export default class AdminController implements IAdminController {
                 res.status(200).json({ message: 'Login Successfull' })
                 console.log('log in success')
             }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async logout(req: Request, res: Response): Promise<void> {
+
+        try {
+
+            res.clearCookie(CommonCode.ADMIN_REFRESH_TOKEN, { httpOnly: true })
+            res.status(200).json({ status: true })
 
         } catch (error) {
             console.log(error)

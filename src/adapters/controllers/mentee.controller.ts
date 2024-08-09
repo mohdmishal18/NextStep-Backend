@@ -81,7 +81,7 @@ export class MenteeController {
 
       async logout(req: Request, res: Response) {
         try {
-          res.cookie("menteeAccessToken", "", { httpOnly: true, expires: new Date() }).cookie("menteeRefreshToken", "", { httpOnly: true, expires: new Date() })
+          res.cookie("menteeRefreshToken", "", { httpOnly: true, expires: new Date() }).cookie("menteeRefreshToken", "", { httpOnly: true, expires: new Date() })
           res.status(200).json({ status: true });
         } catch (error) {
           res.json(error);
@@ -177,7 +177,7 @@ export class MenteeController {
         res.cookie("menteeAccessToken", token, {
           httpOnly: true,
           maxAge: 360000,
-        }).cookie("menteeRefesehToken", refreshToken, {
+        }).cookie("menteeRefreshToken", refreshToken, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000
         })

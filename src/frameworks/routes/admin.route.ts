@@ -24,5 +24,6 @@ const adminController = new AdminController(adminUsecase)
 
 //Auth routes
 router.post('/login', adminController.login)
+router.post('/logout', adminController.logout)
 
 export default router
