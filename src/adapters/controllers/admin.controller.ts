@@ -10,6 +10,9 @@ export default class AdminController implements IAdminController {
     constructor(adminUsecase: IAdminUsecase) {
         this.adminUsecase = adminUsecase;
         this.login = this.login.bind(this)
+        this.logout = this.logout.bind(this)
+        this.getAllSkills = this.getAllSkills.bind(this)
+        this.addSkill = this.addSkill.bind(this)
     }
 
     async login(req: Request, res: Response): Promise<void> {
@@ -38,7 +41,7 @@ export default class AdminController implements IAdminController {
                     maxAge: 30 * 24 * 60 * 60 * 1000
                 })
 
-                res.status(200).json({ message: 'Login Successfull' })
+                res.status(200).json({ status: true, message: 'Login Successfull' })
                 console.log('log in success')
             }
 
@@ -56,6 +59,30 @@ export default class AdminController implements IAdminController {
 
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    async getAllSkills(req: Request, res: Response, next: NextFunction): Promise<void> {
+        
+        try {
+            const skills = await this.adminUsecase.getAllSkills()
+            
+            res.status(200).json({ skills })
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+    }
+
+    async addSkill(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { name } = req.body
+
+           const newSkill = await this.adminUsecase.addSkill(name)
+           res.status(201).json({ skill: newSkill });
+
+        } catch (error) {
+            
         }
     }
 }

@@ -1,3 +1,4 @@
+import { ISkill } from "../../entities/admin.entity"
 
 
 export interface loginRes {
@@ -8,4 +9,6 @@ export interface loginRes {
 
 export default interface IAdminUsecase {
     login(email: string, password: string): Promise<loginRes | void>
+    getAllSkills(): Promise<ISkill[]>
+    addSkill(name: string): Promise<ISkill | void>
 }

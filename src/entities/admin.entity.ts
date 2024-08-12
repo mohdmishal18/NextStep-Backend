@@ -7,3 +7,9 @@ export default interface IAdmin extends Document {
     password : string
     profilePicture: string
 }
+
+export interface ISkill extends Document {
+    _id: string,
+    name: string,
+    isListed: boolean
+}
