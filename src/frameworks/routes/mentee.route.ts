@@ -36,8 +36,8 @@ router.post('/logout',(req,res) => menteeController.logout(req,res))
 router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
 
-router.post('/edit-picture',(req,res) => menteeController.updateUser(req,res))
-router.post('/edit-details',(req,res) => menteeController.editDetails(req, res))
+router.post('/edit-picture',menteeAuth,(req,res) => menteeController.updateUser(req,res))
+router.post('/edit-details',menteeAuth,(req,res) => menteeController.editDetails(req, res))
 
 
 

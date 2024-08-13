@@ -88,7 +88,7 @@ export class MenteeController {
         }
       }
 
-    async verifyOtp(req: Request, res: Response){
+    async verifyOtp(req: Request, res: Response) {
         try {
             const body = req.body;
             if(!body?.email || !body?.otp){
@@ -110,6 +110,11 @@ export class MenteeController {
             res.status(200).json(response);
         } catch (error) {
             console.log(error)
+            if (error instanceof Error) {
+              res.status(400).json({ message: error.message });
+            } else {
+              res.status(400).json({ message: "An unexpected error occurred" });
+            }
         }
     }
 

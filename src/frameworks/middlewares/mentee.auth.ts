@@ -13,10 +13,12 @@ interface IAuthRequest extends Request {
 
 const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) => {
   const refreshToken = req.cookies.menteeRefreshToken
-  let menteeAccessToken = req.cookies.menteeAccessToken;
+  let menteeAccessToken = req.cookies.menteeAccessToken
+  console.log("inside the middle ware");
+  
 
   if (!refreshToken) {
-    res.status(401)
+    return res.status(401)
       .json({ message: "Not authorized, no refresh token" });
   }
 
@@ -28,7 +30,7 @@ const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) 
         maxAge: 1800000,
       })
       menteeAccessToken = newMenteeAccessToken
-       next()
+
     } catch (error) {
       return res
         .status(401)
@@ -59,6 +61,8 @@ const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) 
   // } catch (error) {
   //   return res.status(401).json({ message: "Not authorized, invalid token" });
   // }
+
+  next()
 
 }
 
