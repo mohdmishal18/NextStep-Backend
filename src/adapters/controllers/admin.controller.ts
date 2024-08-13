@@ -13,6 +13,9 @@ export default class AdminController implements IAdminController {
         this.logout = this.logout.bind(this)
         this.getAllSkills = this.getAllSkills.bind(this)
         this.addSkill = this.addSkill.bind(this)
+        this.listSkill = this.listSkill.bind(this)
+        this.editSkill = this.editSkill.bind(this)
+
     }
 
     async login(req: Request, res: Response): Promise<void> {
@@ -79,10 +82,38 @@ export default class AdminController implements IAdminController {
             const { name } = req.body
 
            const newSkill = await this.adminUsecase.addSkill(name)
-           res.status(201).json({ skill: newSkill });
+           console.log(newSkill, "res for add skill from use case")
+           res.status(201).json({ status: true,skill: newSkill });
 
         } catch (error) {
-            
+            console.log(error)
+            if (error instanceof Error) {
+                res.status(400).json({ message: error.message || "An unexpected error occurred" });
+              } else {
+                res.status(400).json({ message: "An unexpected error occurred" });
+              }
         }
     }
+
+    async editSkill(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id , name} = req.body
+            const edited = await this.adminUsecase.editSkill(id , name)
+            res.status(201).json({status: true, editedSkill: edited})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async listSkill(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id, status} = req.body
+            console.log(req.body)
+            const response = await this.adminUsecase.listSkill(id , status)
+            res.status(201).json({status: true, skill: response})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 }

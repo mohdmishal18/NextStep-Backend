@@ -62,5 +62,43 @@ export default class AdminRepository implements IAdminRepository {
         console.log(error)
     }
   }
+
+  async checkSkillExists(name: string): Promise<ISkill | void> {
+    try {
+        const skill = await this.skill.findOne({ name: { $regex: new RegExp(`^${name}$`, 'i') } });
+        if (skill) {
+            return skill;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+ }
+
+ async editSkill(id: string, name: Partial<ISkill>): Promise<ISkill | null> {
+  try {
+    const skill = await this.skill.findByIdAndUpdate(id, {name: name});
+    if (!skill) {
+      throw new Error(ErrorCode.INVALID_SKILL_ID);
+    }
+    return skill;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+async listSkill(id: string, status: boolean): Promise<ISkill | null> {
+  try {
+    const skill = await this.skill.findByIdAndUpdate(id, { isListed: status });
+    if (!skill) {
+      throw new Error(ErrorCode.INVALID_SKILL_ID);
+    }
+    return skill;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
   
 }

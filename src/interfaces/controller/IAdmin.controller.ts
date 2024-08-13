@@ -5,5 +5,6 @@ export default interface IAdminController {
     logout(req: Request, res: Response): Promise<void>;
     getAllSkills(req: Request, res: Response, next: NextFunction): Promise<void>;
     addSkill(req: Request, res: Response, next: NextFunction): Promise<void>;
-   
+    editSkill(req: Request, res: Response, next: NextFunction): Promise<void>;
+    listSkill(req: Request, res: Response, next: NextFunction): Promise<void>;  
 }

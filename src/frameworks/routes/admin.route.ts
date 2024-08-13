@@ -27,9 +27,11 @@ const adminController = new AdminController(adminUsecase)
 router.post('/login', adminController.login)
 router.post('/logout', adminController.logout)
 
-//skill
+//skill management
 router.get('/get-skills',adminController.getAllSkills)
 router.post('/add-skill',adminController.addSkill)
+router.patch('/list-skill', adminController.listSkill)
+router.patch('/edit-skill', adminController.editSkill)
 
 //mentee
 

@@ -66,10 +66,40 @@ export default class AdminUsecase implements IAdminUsecase {
   }
 
   async addSkill(name: string): Promise<ISkill | void> {
-      try {
-        return await this.adminRepository.addSkill( name )
-      } catch (error) {
-        console.log(error)
+    try {
+      const isSkillExist = await this.adminRepository.checkSkillExists(name);
+      if (isSkillExist) {
+        throw new Error("Skill Already Exists");
       }
+
+      return await this.adminRepository.addSkill(name);
+    } catch (error) {
+      console.log(error);
+      // Rethrow the error to be handled by the caller
+      if (error instanceof Error) {
+        throw new Error(error.message || "An unexpected error occurred");
+      } else {
+        throw new Error("An unexpected error occurred");
+      }
+    }
   }
+
+  async editSkill(id: string, name: Partial<ISkill>): Promise<ISkill | null> {
+    try {
+      return await this.adminRepository.editSkill(id, name)
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  }
+
+  async listSkill(id: string, status: boolean): Promise<ISkill | null> {
+    try {
+      return await this.adminRepository.listSkill(id, status)
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  }
+
 }

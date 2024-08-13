@@ -6,4 +6,7 @@ export default interface IAdminRepository {
     checkUserExists(id: string): Promise<IAdmin | null>
     getAllSkills(): Promise<ISkill[]>
     addSkill(name: string):Promise<ISkill | void>
+    checkSkillExists(name: string):Promise<ISkill | void>
+    editSkill(id: string, updatedData: Partial<ISkill>): Promise<ISkill | null>;
+    listSkill(id: string, isListed: boolean): Promise<ISkill | null>;
 }

@@ -1,69 +1,92 @@
 import mongoose from "mongoose";
+import IMentor from "../../entities/mentor.entity";
 
-const MentorSchema = new mongoose.Schema({
-  name: {
+const mentorSchema = new mongoose.Schema({
+  firstName: {
     type: String,
     required: true,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  profilePicture: {
+    type: String,
+    default: null // Assuming the image URL or file path will be stored
+  },
+  coverPicture: {
+    type: String,
+    default: null
   },
   email: {
     type: String,
     required: true,
     unique: true,
+    trim: true,
+    lowercase: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
-  phone: {
-    type: String, // Changed from Number to String to accommodate different phone number formats
-    required: true,
-  },
-  isBlocked: {
-    type: Boolean,
-    default: false,
-  },
-  isApproved: {
-    type: Boolean,
-    default: false
-  },
-  education: {
+  jobTitle: {
     type: String,
-    required: true, // Assuming education is a required field
+    required: true,
+    trim: true
+  },
+  company: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  location: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  category: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  skills: {
+    type: [String], // Array of strings
+    required: true
   },
   bio: {
     type: String,
+    required: true,
+    trim: true
   },
-  otpVerified: {
+  linkedInUrl: {
+    type: String,
+    trim: true
+  },
+  personalWebsiteUrl: {
+    type: String,
+    trim: true
+  },
+  whyBecomeMentor: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  greatestAchievement: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  isApproved: {
     type: Boolean,
-    default: false,
-  },
-  profilePicture: {
-    type: String,
-  },
-  coverPicture: {
-    type: String,
-  },
-  linkedinUrl: {
-    type: String,
     required: true,
-  },
-  presentCompany: {
-    type: String,
-    required: true,
-  },
-  presentRole: {
-    type: String,
-    required: true,
-  },
-  country: {
-    type: String,
-    required: true,
-  },
-  place: {
-    type: String,
-    required: true,
-  },
+    default: false
+  }
+}, {
+  timestamps: true // Automatically adds createdAt and updatedAt fields
 });
 
-const MentorModel = mongoose.model('Mentor', MentorSchema);
+
+const MentorModel = mongoose.model<IMentor>('Mentor', mentorSchema);
 export default MentorModel;

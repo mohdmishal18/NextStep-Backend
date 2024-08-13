@@ -1,37 +1,42 @@
-export interface IMentor {
+import { Document } from "mongoose";
+
+export default interface IMentor extends Document {
     _id: string;
-    name: string;
-    email: string;
-    password: string;
-    phone: string;
-    isBlocked: boolean;
-    education: string;
-    bio: string
-    otpVerified: boolean;
-    profilePicture?:string;
+    profilePicture: string;
     coverPicture?: string;
-    linkedinUrl: string;
-    presentCompany: string;
-    presentRole: string;
-    country: string;
-    place: string;
+    firstName: string
+    lastName: string;
+    password: string;
+    email: string;
+    jobTitle: string;
+    company: string;
+    location: string;
+    category: string;
+    skills: string;
+    bio: string;
+    linkedInUrl: string;
+    personalWebsiteUrl?: string;
+    whyBecomeMentor: string;
+    greatestAchievement: string;
+    isApproved: boolean;
     __v: number;
 }
 
 
 export interface IRegisterMentor {
-    name: string;
-    email: string;
+    profilePicture: string;
+    firstName: string
+    lastName: string;
     password: string;
-    phone: string;
-    education: string;
-    bio: string
-    otpVerified: boolean;
-    profilePicture?:string;
-    coverPicture?: string;
-    linkedinUrl: string;
-    presentCompany: string;
-    presentRole: string;
-    country: string;
-    place: string;
+    email: string;
+    jobTitle: string;
+    company: string;
+    location: string;
+    category: string;
+    skills: string;
+    bio: string;
+    linkedInUrl: string;
+    personalWebsiteUrl?: string;
+    whyBecomeMentor?: string;
+    greatestAchievement?: string;
 }

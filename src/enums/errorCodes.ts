@@ -33,6 +33,5 @@ export enum ErrorCode {
     CONVERSATION_DOESNOT_EXIST = 'CONVERSATION_DOESNOT_EXIST',
 
     // Custom application-specific errors
-    CUSTOM_ERROR_1 = 'CUSTOM_ERROR_1', // Custom error 1
-    CUSTOM_ERROR_2 = 'CUSTOM_ERROR_2', // Custom error 2
+    INVALID_SKILL_ID = 'INVALID_SKILL_ID'
 }
