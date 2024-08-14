@@ -1,17 +1,19 @@
 import { ErrorCode } from "../enums/errorCodes";
 import { Model } from "mongoose";
-import SkillModel from "../frameworks/models/skill.model";
 import IAdmin, { ISkill } from "../entities/admin.entity";
+import IMentor from "../entities/mentor.entity";
 import IAdminRepository from "../interfaces/repositories/IAdmin.repository";
 
 export default class AdminRepository implements IAdminRepository {
 
   private admin: Model<IAdmin>;
   private skill: Model<ISkill>;
+  private mentor: Model<IMentor>;
 
-  constructor(admin: Model<IAdmin>, skill: Model<ISkill>) {
+  constructor(admin: Model<IAdmin>, skill: Model<ISkill> , mentor: Model<IMentor>) {
     this.admin = admin;
     this.skill = skill;
+    this.mentor = mentor
   }
 
   async checkEmailExists(email: string): Promise<IAdmin | null> {
@@ -97,6 +99,19 @@ async listSkill(id: string, status: boolean): Promise<ISkill | null> {
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+async getAllApplications(): Promise<IMentor[]> {
+  try {
+    const mentors = await this.mentor
+      .find({ isApproved: false })
+      .populate('skills', 'name') // Populate the 'skills' field with the 'name' field of the referenced collection
+      .sort({ _id: -1 });
+    return mentors;
+  } catch (error) {
+    console.log(error);
+    return [];
   }
 }
 

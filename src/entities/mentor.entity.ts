@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export default interface IMentor extends Document {
     _id: string;
@@ -11,7 +11,7 @@ export default interface IMentor extends Document {
     jobTitle: string;
     company: string;
     location: string;
-    category: string;
+    // category?: string;
     skills: string;
     bio: string;
     linkedInUrl: string;
@@ -24,7 +24,7 @@ export default interface IMentor extends Document {
 
 
 export interface IRegisterMentor {
-    profilePicture: string;
+    profilePicture?: string;
     firstName: string
     lastName: string;
     password: string;
@@ -32,8 +32,8 @@ export interface IRegisterMentor {
     jobTitle: string;
     company: string;
     location: string;
-    category: string;
-    skills: string;
+    // category: string;
+    skills: ObjectId[];
     bio: string;
     linkedInUrl: string;
     personalWebsiteUrl?: string;

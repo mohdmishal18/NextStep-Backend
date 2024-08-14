@@ -4,6 +4,7 @@ import AdminController from '../../adapters/controllers/admin.controller'
 import AdminUsecase from '../../usecase/admin.usecase'
 import AdminRepository from '../../repository/admin.repository'
 import AdminModel from '../models/admin.model'
+import MentorModel from '../models/mentor.model'
 import SkillModel from '../models/skill.model'
 
 import JwtToken from '../utils/jwtService'
@@ -15,7 +16,7 @@ const router: Router = express.Router()
 const jwtService = new JwtToken()
 const hashingService = new HashingService()
 
-const adminRepository = new AdminRepository( AdminModel, SkillModel )
+const adminRepository = new AdminRepository( AdminModel, SkillModel, MentorModel )
 const adminUsecase = new AdminUsecase(
     adminRepository,
     hashingService,
@@ -38,5 +39,6 @@ router.patch('/edit-skill', adminController.editSkill)
 //mentor
 
 //mentor-applications
+router.get('/all-applications', adminController.getAllApplication)
 
 export default router

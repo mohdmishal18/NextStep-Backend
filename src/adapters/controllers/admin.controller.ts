@@ -15,7 +15,7 @@ export default class AdminController implements IAdminController {
         this.addSkill = this.addSkill.bind(this)
         this.listSkill = this.listSkill.bind(this)
         this.editSkill = this.editSkill.bind(this)
-
+        this.getAllApplication = this.getAllApplication.bind(this)
     }
 
     async login(req: Request, res: Response): Promise<void> {
@@ -113,6 +113,16 @@ export default class AdminController implements IAdminController {
             res.status(201).json({status: true, skill: response})
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    async getAllApplication(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const mentors = await this.adminUsecase.getAllApplications()
+            res.status(200).json({ mentors })
+        } catch (error) {
+            console.log(error);
+            
         }
     }
 

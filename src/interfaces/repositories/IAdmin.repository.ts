@@ -1,5 +1,6 @@
 import IAdmin from "../../entities/admin.entity";
 import { ISkill } from "../../entities/admin.entity";
+import IMentor from "../../entities/mentor.entity";
 
 export default interface IAdminRepository {
     checkEmailExists(email: string): Promise<IAdmin | null>
@@ -9,4 +10,6 @@ export default interface IAdminRepository {
     checkSkillExists(name: string):Promise<ISkill | void>
     editSkill(id: string, updatedData: Partial<ISkill>): Promise<ISkill | null>;
     listSkill(id: string, isListed: boolean): Promise<ISkill | null>;
+    getAllApplications(): Promise<IMentor[]>
+    
 }

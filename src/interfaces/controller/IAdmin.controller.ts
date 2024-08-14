@@ -7,4 +7,5 @@ export default interface IAdminController {
     addSkill(req: Request, res: Response, next: NextFunction): Promise<void>;
     editSkill(req: Request, res: Response, next: NextFunction): Promise<void>;
     listSkill(req: Request, res: Response, next: NextFunction): Promise<void>;  
+    getAllApplication(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import IMentor from "../../entities/mentor.entity";
 
 const mentorSchema = new mongoose.Schema({
@@ -46,15 +46,16 @@ const mentorSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  category: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  skills: {
-    type: [String], // Array of strings
+  // category: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
+  skills: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Skills',  // Make sure your collection is actually named 'Skills'
     required: true
-  },
+}],
   bio: {
     type: String,
     required: true,

@@ -1,4 +1,5 @@
 import { ISkill } from "../entities/admin.entity";
+import IMentor from "../entities/mentor.entity";
 import IAdminRepository from "../interfaces/repositories/IAdmin.repository";
 import IAdminUsecase, { loginRes } from "../interfaces/usecase/IAdmin.usecase";
 import IhashingService from "../interfaces/utils/hashingService";
@@ -99,6 +100,16 @@ export default class AdminUsecase implements IAdminUsecase {
     } catch (error) {
       console.log(error)
       return null
+    }
+  }
+
+  async getAllApplications(): Promise<IMentor[]> {
+    try {
+      const mentors = await this.adminRepository.getAllApplications();
+      return mentors;
+    } catch (error) {
+      console.log(error);
+      return []
     }
   }
 

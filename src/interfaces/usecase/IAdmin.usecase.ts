@@ -1,5 +1,5 @@
 import { ISkill } from "../../entities/admin.entity"
-
+import IMentor from "../../entities/mentor.entity"
 
 export interface loginRes {
     message:string,
@@ -13,4 +13,6 @@ export default interface IAdminUsecase {
     addSkill(name: string): Promise<ISkill | void>
     editSkill(id: string, updatedData: Partial<ISkill>): Promise<ISkill | null>;
     listSkill(id: string, isListed: boolean): Promise<ISkill | null>;
+    getAllApplications(): Promise<IMentor[]>
+    
 }
