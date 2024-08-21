@@ -18,4 +18,9 @@ export default class MentorRepository implements IMentorRepository {
             throw(error)
         }
     }
+
+    async checkEmailExists(email: string): Promise<IMentor | null> {
+        return await this.mentor.findOne({ email: email });
+    }
+
 }

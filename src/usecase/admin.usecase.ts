@@ -1,4 +1,5 @@
 import { ISkill } from "../entities/admin.entity";
+import IMentee from "../entities/mentee.entity";
 import IMentor from "../entities/mentor.entity";
 import IAdminRepository from "../interfaces/repositories/IAdmin.repository";
 import IAdminUsecase, { loginRes } from "../interfaces/usecase/IAdmin.usecase";
@@ -85,12 +86,16 @@ export default class AdminUsecase implements IAdminUsecase {
     }
   }
 
-  async editSkill(id: string, name: Partial<ISkill>): Promise<ISkill | null> {
+  async editSkill(id: string, name: string): Promise<ISkill | null> {
     try {
       return await this.adminRepository.editSkill(id, name)
     } catch (error) {
       console.log(error)
-      return null
+      if (error instanceof Error) {
+        throw new Error(error.message || "An unexpected error occurred");
+      } else {
+        throw new Error("An unexpected error occurred");
+      }
     }
   }
 
@@ -110,6 +115,73 @@ export default class AdminUsecase implements IAdminUsecase {
     } catch (error) {
       console.log(error);
       return []
+    }
+  }
+
+  async approveApplication(id: string, status: string): Promise<IMentor | null> {
+    try {
+      return await this.adminRepository.approveApplication(id, status)
+    } catch (error) {
+      console.log(error);
+      return null
+      
+    }
+  }
+
+  async getApprovedApplications(): Promise<IMentor[]> {
+    try {
+      const approvedMentors = await this.adminRepository.getApprovedApplications()
+      return approvedMentors
+    } catch (error) {
+      console.log(error)
+      return []
+    }
+  }
+
+  async rejectApplication(id: string, status: string): Promise<IMentor | null> {
+    try {
+      return await this.adminRepository.rejectApplication(id , status)
+    } catch (error) {
+      console.log(error)
+      return null
+    }
+  }
+
+  async getAllMentee(): Promise<IMentee[]> {
+    try {
+      const mentees = await this.adminRepository.getAllMentee()
+      return mentees
+    } catch (error) {
+      console.log(error);
+      return []
+    }
+  }
+
+  async blockMentor(id: string, status: boolean) {
+    try {
+      const response = await this.adminRepository.blockOrUnBlockMentor(id, status);
+      if (response?.isBlocked) {
+        return "unblocked successfully";
+      } else {
+        return "blocked successfully";
+      }
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async blockMentee(id: string, status: boolean) {
+    try {
+      const response = await this.adminRepository.blockOrUnBlockMentee(id, status);
+      if (response?.isBlocked) {
+        return "unblocked successfully";
+      } else {
+        return "blocked successfully";
+      }
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   }
 

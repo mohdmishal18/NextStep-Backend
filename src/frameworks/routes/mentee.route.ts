@@ -31,7 +31,8 @@ const menteeController = new MenteeController(menteeUseCase)
 
 router.post('/signup',(req, res) => menteeController.signup(req, res))
 router.post('/signin',(req,res) =>menteeController.login(req,res))
-router.post("/google-login", menteeController.googleLogin);
+router.post('/google-register',(req,res) => menteeController.googleRegister(req,res))
+router.post("/google-login", menteeController.googleLogin)
 router.post('/logout',(req,res) => menteeController.logout(req,res))
 router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))

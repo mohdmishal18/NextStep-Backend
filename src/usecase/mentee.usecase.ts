@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 
 import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository";
 import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
-import { IMenteeUseCase } from "../interfaces/usecase/IMentee.usercase";
+import { IMenteeUseCase, loginRes } from "../interfaces/usecase/IMentee.usercase";
 import { sendEmail } from "../frameworks/utils/emailService";
 import { generateOtp } from '../frameworks/utils/OTPGenerator';
 import { generateOtpHtml } from '../frameworks/utils/otpTemplate';
@@ -62,7 +62,7 @@ export class MenteeUseCase implements IMenteeUseCase {
         }
     }
 
-     // login
+  // login
   async loginAuthentication(data: loginBody) {
     try {
       const value = await this.menteeRepository.checkEmailExists(data.email);
@@ -221,23 +221,47 @@ export class MenteeUseCase implements IMenteeUseCase {
     }
 }
 
-// googleLogin
-async GoogleLogin(data: googleLoginData) {
-  let user = await this.menteeRepository.checkEmailExists(data.email);
-  if (!user) {
-    return { status: false, message: "please register to login" };
+  // googleLogin
+  async GoogleLogin(data: googleLoginData) {
+    let user = await this.menteeRepository.checkEmailExists(data.email);
+    if (!user) {
+      return { status: false, message: "please register to login" };
+    }
+    const loginUser = await this.menteeRepository.checkEmailExists(data.email);
+
+    let payload = {
+      userId: loginUser?._id as string,
+      name: loginUser?.name as string,
+      role: "mentee",
+    };
+
+    const token = this.jwtService.generateToken(payload);
+    const refreshToken = this.jwtService.generateRefreshToken(payload)
+    return { status: true, message: "google Login succesfull", token, refreshToken, loginUser };
   }
-  const loginUser = await this.menteeRepository.checkEmailExists(data.email);
 
-  let payload = {
-    userId: loginUser?._id as string,
-    name: loginUser?.name as string,
-    role: "mentee",
-  };
+  async googleRegister(data: googleLoginData) {
+    try {
+      let user = await this.menteeRepository.checkEmailExists(data.email);
+      if (user) {
+        return { status: false, message: "user already exists with this email" };
+      }
+      const newUser = await this.menteeRepository.saveGoogleLogin(data)
+      console.log(newUser, 'new user in usecase')
 
-  const token = this.jwtService.generateToken(payload);
-  const refreshToken = this.jwtService.generateRefreshToken(payload)
-  return { status: true, message: "google Login succesfull", token, refreshToken, loginUser };
-}
+      let payload = {
+        userId: newUser?._id as string,
+        name: newUser?.name as string,
+        role: "user",
+      };
+
+      const token = this.jwtService.generateToken(payload);
+      const refreshToken = this.jwtService.generateRefreshToken(payload)
+      return { status: true, message: "google register succesfull", token, refreshToken, newUser };
+    } catch (error) {
+      console.log(error);
+      return null
+    }
+  }
 
 }

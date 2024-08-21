@@ -18,7 +18,8 @@ export default interface IMentor extends Document {
     personalWebsiteUrl?: string;
     whyBecomeMentor: string;
     greatestAchievement: string;
-    isApproved: boolean;
+    isBlocked: boolean
+    status: 'pending' | 'approved' | 'rejected';
     __v: number;
 }
 

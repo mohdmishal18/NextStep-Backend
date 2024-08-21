@@ -8,6 +8,7 @@ export default class AdminController implements IAdminController {
     private adminUsecase;
 
     constructor(adminUsecase: IAdminUsecase) {
+
         this.adminUsecase = adminUsecase;
         this.login = this.login.bind(this)
         this.logout = this.logout.bind(this)
@@ -16,6 +17,12 @@ export default class AdminController implements IAdminController {
         this.listSkill = this.listSkill.bind(this)
         this.editSkill = this.editSkill.bind(this)
         this.getAllApplication = this.getAllApplication.bind(this)
+        this.approveApplication = this.approveApplication.bind(this)
+        this.rejectApplication = this.rejectApplication.bind(this)
+        this.getApprovedApplications = this.getApprovedApplications.bind(this)
+        this.getAllMentee = this.getAllMentee.bind(this)
+        this.blockMentee = this.blockMentee.bind(this)
+        this.blockMentor = this.blockMentor.bind(this)
     }
 
     async login(req: Request, res: Response): Promise<void> {
@@ -101,7 +108,11 @@ export default class AdminController implements IAdminController {
             const edited = await this.adminUsecase.editSkill(id , name)
             res.status(201).json({status: true, editedSkill: edited})
         } catch (error) {
-            console.log(error)
+            if (error instanceof Error) {
+                res.status(400).json({ message: error.message || "An unexpected error occurred" });
+              } else {
+                res.status(400).json({ message: "An unexpected error occurred" });
+              }
         }
     }
 
@@ -124,6 +135,65 @@ export default class AdminController implements IAdminController {
             console.log(error);
             
         }
+    }
+
+    async approveApplication(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id, status} = req.body
+            const approvedMentor = await this.adminUsecase.approveApplication(id , status)
+            res.status(201).json({status: true,approvedMentor})
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getApprovedApplications(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const approvedMentors = await this.adminUsecase.getApprovedApplications()
+            res.status(201).json({status: true,approvedMentors})
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+
+    async rejectApplication(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id, status} = req.body
+            const rejectedMentor = await this.adminUsecase.rejectApplication(id , status)
+            res.status(201).json({status: true, rejectedMentor})
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getAllMentee(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const mentees = await this.adminUsecase.getAllMentee()
+            res.status(201).json({mentees})
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async blockMentee(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { id, status } = req.body;
+            const response = await this.adminUsecase.blockMentee(id, status);
+            res.status(200).json(response);
+          } catch (error) {
+            console.log(error);
+          }
+    }
+
+    async blockMentor(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { id, status } = req.body;
+            const response = await this.adminUsecase.blockMentor(id, status);
+            res.status(200).json(response);
+          } catch (error) {
+            console.log(error);
+          }
     }
 
 }

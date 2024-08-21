@@ -8,4 +8,10 @@ export default interface IAdminController {
     editSkill(req: Request, res: Response, next: NextFunction): Promise<void>;
     listSkill(req: Request, res: Response, next: NextFunction): Promise<void>;  
     getAllApplication(req: Request, res: Response, next: NextFunction): Promise<void>;
+    getApprovedApplications(req: Request, res: Response, next: NextFunction):Promise<void>
+    approveApplication(req: Request, res: Response, next: NextFunction): Promise<void>
+    rejectApplication(req: Request, res: Response, next: NextFunction): Promise<void>
+    getAllMentee(req: Request, res: Response, next: NextFunction): Promise<void>
+    blockMentor(req: Request, res: Response, next: NextFunction): Promise<void>
+    blockMentee(req: Request, res: Response, next: NextFunction): Promise<void>
 }

@@ -14,11 +14,9 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
     },
     phone: {
         type: Number,
-        required: true
     },
     bio: {
         type: String,
@@ -28,11 +26,9 @@ const UserSchema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        reqiured: true
     },
     coverPicture: {
         type: String,
-        reqired: true
     },
     isBlocked: {
         type: Boolean,

@@ -18,9 +18,10 @@ export default interface IMentee {
 export interface IRegisterMentee {
     name: string;
     email: string;
-    phone: Number;
-    password: string;
-    role: string
+    profilePicture?: string;
+    phone?: Number;
+    password?: string;
+    role?: string
 }
 
 export interface editMenteeDetails {

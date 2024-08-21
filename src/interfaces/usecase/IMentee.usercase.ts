@@ -42,6 +42,7 @@ export interface IMenteeUseCase {
     loginAuthentication(data:loginBody):Promise<loginRes|null>
     updateUser(email: string, profilePic: string, coverPic: string):Promise<updateUser|null>
     editDetails(name: string,phone: string,bio: string,education: string,email: string):Promise<updateUser|null>
+    googleRegister(data: googleLoginData) :Promise<loginRes|null>
 }
 
   

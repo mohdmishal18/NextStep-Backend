@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-
+import { CommonCode } from "../../enums/commonCodes";
 
 import { IMenteeUseCase } from "../../interfaces/usecase/IMentee.usercase";
 import { MenteePresenter } from "../presenters/mentee.presenter";
@@ -189,6 +189,37 @@ export class MenteeController {
         return res.status(200).json(response);
       } else {
         return res.status(403).json(response)
+      }
+    }
+
+    async googleRegister(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>,
+      res: Response<any, Record<string, any>>) {
+      try {
+        const { name, email, image } = req.body;
+        const data = {
+          name,
+          email,
+          image,
+        };
+        
+        const response = await this.menteeUseCase.googleRegister(data)
+        console.log(response, "res on google register");
+        
+        if (response?.status) {
+          const { token, refreshToken } = response;
+          res.cookie("menteeAccessToken", token, {
+            httpOnly: true,
+            maxAge: 360000,
+          }).cookie("menteeRefreshToken", refreshToken, {
+            httpOnly: true,
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+          })
+          res.status(200).json(response)
+        } else {
+          res.status(403).json(response)
+        }
+      } catch (error) {
+  
       }
     }
   

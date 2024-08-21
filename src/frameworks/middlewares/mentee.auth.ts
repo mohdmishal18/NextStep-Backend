@@ -39,29 +39,6 @@ const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) 
    
   }
 
-  // try {
-  //   const decoded = jwtService.verfiyToken(menteeAccessToken)
-  //   let user;
-  //   if (decoded) {
-  //     user = await userRepo.checkEmailExists(decoded.userId)
-  //   }
-
-  //   if (!user) {
-  //     return res.status(401).json({ message: "User not found" });
-  //   }
-
-  //   if (user.isBlocked) {      
-  //     return res.status(401).json({ message: "You are blocked by admin!" });
-  //   }
-
-  //   if (decoded?.role != 'mentee') {
-  //     return res.status(401).json({ message: "Not authorized, invalid role" });
-  //   }
-  //   next()
-  // } catch (error) {
-  //   return res.status(401).json({ message: "Not authorized, invalid token" });
-  // }
-
   next()
 
 }

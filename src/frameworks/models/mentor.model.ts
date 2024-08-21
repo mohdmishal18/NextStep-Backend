@@ -14,7 +14,7 @@ const mentorSchema = new mongoose.Schema({
   },
   profilePicture: {
     type: String,
-    default: null // Assuming the image URL or file path will be stored
+    default: null
   },
   coverPicture: {
     type: String,
@@ -53,7 +53,7 @@ const mentorSchema = new mongoose.Schema({
   // },
   skills: [{
     type: Schema.Types.ObjectId,
-    ref: 'Skills',  // Make sure your collection is actually named 'Skills'
+    ref: 'Skills', 
     required: true
 }],
   bio: {
@@ -79,13 +79,20 @@ const mentorSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  isApproved: {
+  isBlocked: {
     type: Boolean,
-    required: true,
-    default: false
+    default: false,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'approved', 'rejected'], 
+    default: 'pending',
+    required: true
   }
+
 }, {
-  timestamps: true // Automatically adds createdAt and updatedAt fields
+  timestamps: true
 });
 
 

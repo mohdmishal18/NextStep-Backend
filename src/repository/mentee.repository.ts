@@ -4,6 +4,7 @@ import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
 import UserModel from "../frameworks/models/user.model";
 import { OtpModel } from "../frameworks/models/otp.model";
 import { editMenteeDetails } from "../entities/mentee.entity";
+import { googleLoginData } from "../interfaces/usecase/IMentee.usercase";
 
 export class MenteeRepository implements IMenteeRepository {
 
@@ -14,7 +15,7 @@ export class MenteeRepository implements IMenteeRepository {
         this.user = user;
     }
 
-    async save(user: IRegisterMentee): Promise<IRegisterMentee> {
+    async save(user: IRegisterMentee): Promise<IMentee> {
 
         const userData = new UserModel(user);
         const newUser = await userData.save();
@@ -50,15 +51,14 @@ export class MenteeRepository implements IMenteeRepository {
 
     async verifyOtp(email: string, otp: string): Promise<string> {
         try {
-            // Find the OTP document
 
             const otpFound = await OtpModel.findOne({ email: email, otp: otp }).sort({ expiry: -1 });
             console.log(otpFound);
             
             if (!otpFound) {
-                throw new Error("Invalid OTP"); // Throw an error if OTP not found
+                throw new Error("Invalid OTP");
             }
-            console.log(otpFound);
+            console.log(otpFound, "OTP");
 
             const expirationDuration = 60 * 1000; // 60 seconds in milliseconds
             const currentTime = Date.now();
@@ -122,5 +122,21 @@ export class MenteeRepository implements IMenteeRepository {
             console.error("Error in repository:", error);
             throw new Error("Failed to update user");
         }
+    }
+
+    async saveGoogleLogin(data: googleLoginData): Promise<IMentee | null> {
+        try {
+            const user = new this.user({
+              name: data.name,
+              email: data.email,
+              image: data.image,
+              otpVerified: true,
+            });
+            const newUser = await user.save();
+            return newUser
+          } catch (error) {
+            console.log(error);
+            return null
+          }
     }
 }
