@@ -62,7 +62,6 @@ export default class MentorUsecase implements IMentorUsecase {
         }
 
         
-
         const status = await this.hashingService.compare(
           data.password,
           value.password

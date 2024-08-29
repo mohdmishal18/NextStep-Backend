@@ -13,3 +13,8 @@ export interface ISkill extends Document {
     name: string,
     isListed: boolean
 }
+
+interface mishal {
+    name: string,
+    passwor
+}

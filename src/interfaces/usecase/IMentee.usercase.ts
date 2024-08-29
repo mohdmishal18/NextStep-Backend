@@ -45,4 +45,7 @@ export interface IMenteeUseCase {
     googleRegister(data: googleLoginData) :Promise<loginRes|null>
 }
 
-  
+export interface IJwtPayload{
+  id: string,
+  user_id: string
+}

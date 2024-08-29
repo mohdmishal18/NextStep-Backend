@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { CommonCode } from "../../enums/commonCodes";
 import IMentorController from "../../interfaces/controller/IMentor.controller";
 import IMentorUsecase from "../../interfaces/usecase/IMentor.usecase";
-import { ErrorCode } from "../../enums/errorCodes";
 
 export default class MentorController implements IMentorController {
   private mentorUsecase;
@@ -11,7 +10,7 @@ export default class MentorController implements IMentorController {
     this.mentorUsecase = mentorUsecase;
     this.addMentor = this.addMentor.bind(this);
     this.logout = this.logout.bind(this);
-    this.login = this.login.bind(this);
+    this.login = this.login.  bind(this);
     this.googleLogin = this.googleLogin.bind(this);
   }
 

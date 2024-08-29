@@ -50,7 +50,7 @@ export default class AdminRepository implements IAdminRepository {
 
   async getAllSkills(): Promise<ISkill[]> {
     try {
-      const skills = await this.skill.find().sort({ _id: -1 })
+      const skills = await this.skill.find({isListed: true}).sort({ _id: -1 })
       return skills;
     } catch (error) {
       console.error(error);
@@ -180,7 +180,7 @@ export default class AdminRepository implements IAdminRepository {
     try {
       return await this.mentor.findOneAndUpdate(
         { _id: id },
-        { $set: { isBlocked: !status } }
+        { $set: { isBlocked: status } }
       );
     } catch (error) {
       console.log(error);
@@ -192,7 +192,7 @@ export default class AdminRepository implements IAdminRepository {
     try {
       return await this.mentee.findOneAndUpdate(
         { _id: id },
-        { $set: { isBlocked: !status } }
+        { $set: { isBlocked: status } }
       );
     } catch (error) {
       console.log(error);
