@@ -27,4 +27,20 @@ export default class PostUsecase implements IPostUsecase {
             throw error;
         }
     }
+
+    async userPosts(userid: string): Promise<IPost[] | null> {
+        try {
+            return await this.postRepository.userPosts(userid)
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deletePost(id: string): Promise<IPost | null> {
+        try {
+            return await this.postRepository.deletePost(id)
+        } catch (error) {
+            throw error;
+        }
+    }
 }

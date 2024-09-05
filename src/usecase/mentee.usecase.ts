@@ -13,6 +13,7 @@ import { editMenteeDetails } from '../entities/mentee.entity';
 import { googleLoginData } from '../interfaces/usecase/IMentee.usercase';
 import IjwtService from '../interfaces/utils/jwtService';
 import IhashingService from '../interfaces/utils/hashingService'; 
+import { IPost } from '../entities/post.entity';
 
 export class MenteeUseCase implements IMenteeUseCase {
     
@@ -263,5 +264,18 @@ export class MenteeUseCase implements IMenteeUseCase {
       return null
     }
   }
+
+  async search(query: string): Promise<{ users: IMentee[], posts: IPost[] }> {
+    try {
+        const [users, posts] = await Promise.all([
+            this.menteeRepository.searchUsers(query),
+            this.menteeRepository.searchPosts(query),
+        ]);
+
+        return { users, posts };
+    } catch (error) {
+        throw new Error("Failed to search");
+    }
+}
 
 }

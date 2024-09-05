@@ -2,6 +2,8 @@ import { Model } from "mongoose";
 import { IMenteeRepository } from "../interfaces/repositories/IMentee.repository";
 import IMentee, {IRegisterMentee} from "../entities/mentee.entity";
 import UserModel from "../frameworks/models/user.model";
+import { IPost } from "../entities/post.entity";
+import PostModel from "../frameworks/models/post.model";
 import { OtpModel } from "../frameworks/models/otp.model";
 import { editMenteeDetails } from "../entities/mentee.entity";
 import { googleLoginData } from "../interfaces/usecase/IMentee.usercase";
@@ -9,10 +11,13 @@ import { googleLoginData } from "../interfaces/usecase/IMentee.usercase";
 export class MenteeRepository implements IMenteeRepository {
 
     private user: Model<IMentee>;
+    private post: Model<IPost>;
     constructor(
         user: Model<IMentee>,
+        post: Model<IPost>
     ){
         this.user = user;
+        this.post = post
     }
 
     async save(user: IRegisterMentee): Promise<IMentee> {
@@ -139,4 +144,53 @@ export class MenteeRepository implements IMenteeRepository {
             return null
           }
     }
+
+    async searchUsers(query: string): Promise<IMentee[]> {
+        try {
+            return await UserModel.find({ name: { $regex: query, $options: "i" } }).exec();  // Case-insensitive search by name
+        } catch (error) {
+            throw new Error("Failed to search users");
+        }
+    }
+    
+
+    async searchPosts(query: string): Promise<IPost[]> {
+        try {
+            const posts = await PostModel.aggregate([
+                {
+                    $lookup: {
+                        from: "skills", // The Skills collection name
+                        localField: "tags",
+                        foreignField: "_id",
+                        as: "tagDetails",
+                    },
+                },
+                {
+                    $match: {
+                        $or: [
+                            { title: { $regex: query, $options: "i" } }, // Case-insensitive title search
+                            { "tagDetails.name": { $regex: query, $options: "i" } }, // Case-insensitive tag name search
+                        ],
+                    },
+                },
+                {
+                    $project: {
+                        userid: 1,
+                        title: 1,
+                        tags: 1,
+                        image: 1,
+                        content: 1,
+                        likes: 1,
+                        createdAt: 1,
+                        updatedAt: 1,
+                    },
+                },
+            ]);
+    
+            return posts;
+        } catch (error) {
+            throw new Error("Failed to search posts");
+        }
+    }
+    
 }

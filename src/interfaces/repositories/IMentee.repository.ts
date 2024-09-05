@@ -1,4 +1,5 @@
 import IMentee, {IRegisterMentee} from "../../entities/mentee.entity";
+import { IPost } from "../../entities/post.entity";
 import { googleLoginData } from "../usecase/IMentee.usercase";
 export interface IMenteeRepository {
     save(user: IRegisterMentee): Promise<IMentee>
@@ -10,4 +11,8 @@ export interface IMenteeRepository {
     updateUser(email: string, profilePic: string, coverPic: string):Promise<IMentee|null>
     editDetails(name: string,phone: string,bio: string,education: string,email: string):Promise<IMentee|null>
     saveGoogleLogin(data:googleLoginData):Promise<IMentee | null>
+
+    // Search Methods
+    searchUsers(query: string): Promise<IMentee[]>;
+    searchPosts(query: string): Promise<IPost[]>;
 }

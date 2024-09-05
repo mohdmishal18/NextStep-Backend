@@ -3,6 +3,8 @@ import { IPost } from "../../entities/post.entity";
 export interface IPostUsecase{
     createPost(data: IPost):Promise<IPost>
     getAllPosts(): Promise<IPost[] | null>
+    userPosts(userid: string): Promise<IPost[] | null>
+    deletePost(id: string): Promise<IPost | null>
     // editPost(postid: string, caption: string): Promise<IPost>
     // deletePost(postid: string): Promise<IPost>
     // getPosts(userid: string,postid: string | null,page: number): Promise<IPost[]>

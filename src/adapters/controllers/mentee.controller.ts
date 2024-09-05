@@ -223,5 +223,23 @@ export class MenteeController {
       }
     }
   
+    async search(req: Request, res: Response) {
+      try {
+          const { query } = req.body;
+
+          if (!query || query.trim() === "") {
+              return res.status(400).json({ status: false, message: "Search query is required" });
+          }
+
+          const results = await this.menteeUseCase.search(query);
+
+          res.status(200).json({ status: true, message: "Search results fetched successfully", data: results });
+      } catch (error) {
+          console.error("Error in search controller:", error);
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          const errorCode = (error as any).code || 500;
+          res.status(errorCode).json(MenteePresenter.ErrorRes({ message: errorMessage, code: errorCode }));
+      }
+  }
 
 }

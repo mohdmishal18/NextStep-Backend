@@ -21,6 +21,7 @@ const AdminSchema: Schema<IAdmin> = new mongoose.Schema({
         type: String,
         required: true,
     }
+    
 });
 
 const AdminModel: Model<IAdmin> = mongoose.model<IAdmin>('Admins', AdminSchema);

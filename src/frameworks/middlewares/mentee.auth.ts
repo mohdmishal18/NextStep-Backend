@@ -2,10 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import JwtToken from "../utils/jwtService";
 import { MenteeRepository } from "../../repository/mentee.repository";
 import UserModel from "../models/user.model";
+import PostModel from "../models/post.model";
 
 
 const jwtService = new JwtToken()
-const userRepo = new MenteeRepository(UserModel)
+const userRepo = new MenteeRepository(UserModel, PostModel)
 
 interface IAuthRequest extends Request {
   userId?: string;

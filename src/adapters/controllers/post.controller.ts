@@ -14,6 +14,8 @@ export default class PostController implements IPostController {
         this.postUsecase = postUsecase
         this.createPost = this.createPost.bind(this)
         this.getAllPosts = this.getAllPosts.bind(this)
+        this.userPosts = this.userPosts.bind(this)
+        this.deletePost = this.deletePost.bind(this)
     }
 
     async createPost(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -31,6 +33,28 @@ export default class PostController implements IPostController {
         try {
             const result = await this.postUsecase.getAllPosts()
             console.log(result, 'result in the controller')
+            res.status(201).json({ status: 'success', posts: result})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async userPosts(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {userid} = req.body
+            const result = await this.postUsecase.userPosts(userid)
+            console.log(result , 'in controler')
+            res.status(201).json({ status: 'success', posts: result})
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async deletePost(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id} = req.body
+            const result = await this.postUsecase.deletePost(id)
+            console.log(result , 'in controler')
             res.status(201).json({ status: 'success', posts: result})
         } catch (error) {
             next(error)

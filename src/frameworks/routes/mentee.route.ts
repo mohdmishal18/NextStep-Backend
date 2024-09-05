@@ -12,6 +12,7 @@ import { MenteeUseCase } from '../../usecase/mentee.usecase'
 import { OtpModel } from '../models/otp.model'
 import UserModel from '../models/user.model'
 import Users from '../models/user.model'
+import Posts from '../models/post.model'
 
 //utils
 import JwtToken from '../utils/jwtService'
@@ -25,7 +26,7 @@ const router: Router = express.Router()
 const jwtService = new JwtToken();
 const hashingService = new HashingService();
 
-const menteeRepository = new MenteeRepository(Users)
+const menteeRepository = new MenteeRepository(Users, Posts)
 const menteeUseCase = new MenteeUseCase(menteeRepository, jwtService, hashingService)
 const menteeController = new MenteeController(menteeUseCase)
 
@@ -39,6 +40,8 @@ router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
 
 router.post('/edit-picture',menteeAuth,(req,res) => menteeController.updateUser(req,res))
 router.post('/edit-details',menteeAuth,(req,res) => menteeController.editDetails(req, res))
+
+router.post('/search',menteeAuth, (req,res) => menteeController.search(req,res))
 
 
 

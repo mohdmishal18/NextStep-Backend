@@ -13,5 +13,7 @@ const postController = new PostController(postUsecase)
 
 router.post('/create-post',menteeAuth, postController.createPost)
 router.get('/all-posts',menteeAuth,postController.getAllPosts)
+router.post('/user-posts',menteeAuth, postController.userPosts)
+router.post('/delete-post',menteeAuth, postController.deletePost)
 
 export default router
