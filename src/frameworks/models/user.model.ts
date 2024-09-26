@@ -30,6 +30,11 @@ const UserSchema = new mongoose.Schema({
     coverPicture: {
         type: String,
     },
+    interests: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Skills',
+        default: [],
+    },
     isBlocked: {
         type: Boolean,
         default: false

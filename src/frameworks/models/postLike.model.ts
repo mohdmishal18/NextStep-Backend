@@ -1,20 +1,23 @@
-import mongoose from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
+import { IPostLike } from '../../entities/post.entity';
 
-const LikeSchema = new mongoose.Schema({
-  user: {
-    type: String,
-    required: true,
+// Define the schema for likes
+const LikeSchema = new mongoose.Schema(
+  {
+    post_id: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Post',
+      required: true,   // Make sure post_id is required
+    },
+    user_id: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Users',
+      required: true,   // Make sure user_id is required
+    },
   },
-  post: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Post',
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-}, {timestamps: true});
+  { timestamps: true } // Adds createdAt and updatedAt timestamps
+);
 
-const LikeModel = mongoose.model('Like', LikeSchema);
+// Bind the IPostLike interface to the LikeModel
+const LikeModel = mongoose.model<IPostLike>('Likes', LikeSchema);
 export default LikeModel;

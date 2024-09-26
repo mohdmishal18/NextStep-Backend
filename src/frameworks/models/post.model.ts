@@ -11,6 +11,8 @@ import { IPost } from '../../entities/post.entity';
 //   likes: mongoose.Schema.Types.ObjectId[];
 // }
 
+
+
 const PostSchema = new mongoose.Schema<IPost>({
   userid: {
     type: mongoose.Schema.Types.ObjectId,

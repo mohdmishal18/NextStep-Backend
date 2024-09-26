@@ -43,4 +43,55 @@ export default class PostUsecase implements IPostUsecase {
             throw error;
         }
     }
+
+    async editPost(data: Partial<IPost>): Promise<IPost> {
+        try {
+            // Find the existing post by its ID or other unique identifier
+            // const existingPost = await this.postRepository.findPostById(data.userid);
+            // if (!existingPost) {
+            //     throw new Error('Post not found');
+            // }
+
+            // Update the post with the new data
+            const updatedPost = await this.postRepository.editPost(data)
+            return updatedPost;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async likePost(userid: string, postid: string): Promise<IPostLike> {
+        try {
+            const isLiked = await this.postRepository.isPostLikedByUser(
+                userid,
+                postid
+            );
+            if (!isLiked) {
+                const result = await this.postRepository.likePost(userid, postid);
+                return result;
+            } else {
+                throw new Error("Error like not Submitted");
+            }
+        } catch (error) {
+            throw error;
+        }
+    }
+    async unlikePost(userid: string, postid: string): Promise<any> {
+        try {
+            const isLiked = await this.postRepository.isPostLikedByUser(
+                userid,
+                postid
+            );
+            if (isLiked) {
+                const result = await this.postRepository.unlikePost(userid, postid);
+                return result;
+            }
+
+            throw new Error("Error unlike not Submitted");
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
 }

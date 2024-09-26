@@ -12,6 +12,7 @@ interface IAuthRequest extends Request {
   userId?: string;
 }
 
+
 const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) => {
   const refreshToken = req.cookies.menteeRefreshToken
   let menteeAccessToken = req.cookies.menteeAccessToken
