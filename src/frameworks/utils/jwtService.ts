@@ -33,7 +33,7 @@ export default class JwtToken implements jwtService {
   }
 
   // verifying JWT Token
-  verfiyToken(token: string): DecodedJwt | null {
+  verifyToken(token: string): DecodedJwt | null {
     try {
       let secretKey = process.env.JWT_ACCESS_TOKEN_SECRET
       let decoded = jwt.verify(token, secretKey!) as DecodedJwt

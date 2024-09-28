@@ -222,6 +222,24 @@ export class MenteeController {
   
       }
     }
+
+    async getMenteeById(req: Request, res: Response) {
+      try {
+          const menteeId = req.params.id; 
+  
+          const mentee = await this.menteeUseCase.findMenteeById(menteeId);
+  
+          if (!mentee) {
+              return res.status(404).json({ status: false, message: "Mentee not found" });
+          }
+  
+          res.status(200).json({ status: true, message: "Mentee fetched successfully", data: mentee });
+      } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          res.status(500).json({ status: false, message: errorMessage });
+      }
+  }
+  
   
     async search(req: Request, res: Response) {
       try {

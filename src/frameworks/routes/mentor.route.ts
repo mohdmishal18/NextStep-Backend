@@ -22,5 +22,6 @@ const mentorController = new MentorController(mentorUsecase)
 router.post('/mentor-apply', mentorController.addMentor)
 router.post("/google-login", mentorController.googleLogin);
 router.post('/login',mentorController.login)
+router.post('/logout',mentorController.logout)
 
 export default router

@@ -265,10 +265,20 @@ export class MenteeUseCase implements IMenteeUseCase {
     }
   }
 
+  async findMenteeById(menteeId: string): Promise<IMentee> {
+    try {
+        const mentee = await this.menteeRepository.findMenteeById(menteeId);
+        return mentee;
+    } catch (error) {
+        console.error("Error in finding mentee:", error);
+        throw new Error("Failed to find mentee by ID");
+    }
+  }
+
   async search(query: string): Promise<{ users: IMentee[], posts: IPost[] }> {
     try {
         const [users, posts] = await Promise.all([
-            this.menteeRepository.searchUsers(query),
+            this.menteeRepository.searchMentees(query),
             this.menteeRepository.searchPosts(query),
         ]);
 

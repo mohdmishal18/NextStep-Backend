@@ -37,7 +37,7 @@ router.post("/google-login", menteeController.googleLogin)
 router.post('/logout',(req,res) => menteeController.logout(req,res))
 router.post('/verify-otp', (req, res) => menteeController.verifyOtp(req, res))
 router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
-
+router.get('/get-mentee/:id', (req,res) => menteeController.getMenteeById(req,res))
 router.post('/edit-picture',menteeAuth,(req,res) => menteeController.updateUser(req,res))
 router.post('/edit-details',menteeAuth,(req,res) => menteeController.editDetails(req, res))
 

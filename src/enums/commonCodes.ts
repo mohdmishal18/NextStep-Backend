@@ -12,3 +12,9 @@ export enum CommonCode {
     ADMIN_ACCESS_TOKEN = 'ADMIN_ACCESS_TOKEN',
     ADMIN_REFRESH_TOKEN = 'ADMIN_REFRESH_TOKEN',
 }
+
+export enum role {
+    ADMIN = "admin",
+    MENTOR = 'mentor',
+    MENTEE = 'mentee'
+}

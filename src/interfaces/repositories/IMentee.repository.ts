@@ -13,6 +13,9 @@ export interface IMenteeRepository {
     saveGoogleLogin(data:googleLoginData):Promise<IMentee | null>
 
     // Search Methods
-    searchUsers(query: string): Promise<IMentee[]>;
+    searchMentees(query: string): Promise<IMentee[]>;
     searchPosts(query: string): Promise<IPost[]>;
+
+    findMenteeById(menteeId: string): Promise<IMentee>;
+
 }

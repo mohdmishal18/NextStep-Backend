@@ -1,5 +1,5 @@
 import IMentee, {IRegisterMentee} from "../../entities/mentee.entity";
-
+import { IPost } from "../../entities/post.entity";
 export interface loginBody {
     email:string
     password: string
@@ -33,6 +33,11 @@ export interface loginBody {
     image:string
   }
 
+  export interface IJwtPayload{
+    id: string,
+    user_id: string
+  }
+
 export interface IMenteeUseCase {
     signup(data: IRegisterMentee): Promise<IRegisterMentee>
     verifyOtp(email: string, otp: string): any
@@ -43,12 +48,8 @@ export interface IMenteeUseCase {
     updateUser(email: string, profilePic: string, coverPic: string):Promise<updateUser|null>
     editDetails(name: string,phone: string,bio: string,education: string,email: string):Promise<updateUser|null>
     googleRegister(data: googleLoginData) :Promise<loginRes|null>
-
+    findMenteeById(menteeId: string):Promise<IMentee>
     // New search method
     search(query: string): Promise<{ users: IMentee[]; posts: IPost[] }>;
 }
 
-export interface IJwtPayload{
-  id: string,
-  user_id: string
-}

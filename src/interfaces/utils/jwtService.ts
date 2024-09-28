@@ -20,7 +20,7 @@ export interface tokenData {
   
   export default interface IjwtService {
     generateToken(data : tokenData):string
-    verfiyToken(token:string):DecodedJwt|null
+    verifyToken(token:string):DecodedJwt|null
     generateTokenForgot(data:tokenData,expireTime:string):string
     generateRefreshToken(data:tokenData):string
   }

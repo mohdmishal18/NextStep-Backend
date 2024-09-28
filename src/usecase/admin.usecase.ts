@@ -5,6 +5,7 @@ import IAdminRepository from "../interfaces/repositories/IAdmin.repository";
 import IAdminUsecase, { loginRes } from "../interfaces/usecase/IAdmin.usecase";
 import IhashingService from "../interfaces/utils/hashingService";
 import IjwtService from "../interfaces/utils/jwtService";
+import { role } from "../enums/commonCodes";
 
 export default class AdminUsecase implements IAdminUsecase {
   private adminRepository: IAdminRepository;
@@ -41,7 +42,7 @@ export default class AdminUsecase implements IAdminUsecase {
       let payload = {
         userId: admin._id,
         name: admin.name,
-        role: "admin",
+        role: role.ADMIN,
       };
 
       let adminAccessToken = this.jwtService.generateToken(payload);
