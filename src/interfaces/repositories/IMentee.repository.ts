@@ -14,7 +14,6 @@ export interface IMenteeRepository {
 
     // Search Methods
     searchMentees(query: string): Promise<IMentee[]>;
-    searchPosts(query: string): Promise<IPost[]>;
 
     findMenteeById(menteeId: string): Promise<IMentee>;
 

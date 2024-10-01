@@ -40,8 +40,7 @@ router.post('/resend-otp',(req,res) => menteeController.resendOtp(req,res))
 router.get('/get-mentee/:id', (req,res) => menteeController.getMenteeById(req,res))
 router.post('/edit-picture',menteeAuth,(req,res) => menteeController.updateUser(req,res))
 router.post('/edit-details',menteeAuth,(req,res) => menteeController.editDetails(req, res))
-
-router.post('/search',menteeAuth, (req,res) => menteeController.search(req,res))
+router.post('/search-mentees',menteeAuth,(req,res) => menteeController.searchMentees(req,res))
 
 
 

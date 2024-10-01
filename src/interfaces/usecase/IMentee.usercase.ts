@@ -49,7 +49,6 @@ export interface IMenteeUseCase {
     editDetails(name: string,phone: string,bio: string,education: string,email: string):Promise<updateUser|null>
     googleRegister(data: googleLoginData) :Promise<loginRes|null>
     findMenteeById(menteeId: string):Promise<IMentee>
-    // New search method
-    search(query: string): Promise<{ users: IMentee[]; posts: IPost[] }>;
+    searchMentees(query: string): Promise<IMentee[]>;
 }
 

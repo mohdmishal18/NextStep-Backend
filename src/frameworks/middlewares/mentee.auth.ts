@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { CommonCode } from "../../enums/commonCodes";
 import JwtToken from "../utils/jwtService";
 import { MenteeRepository } from "../../repository/mentee.repository";
 import UserModel from "../models/user.model";
@@ -14,8 +15,8 @@ interface IAuthRequest extends Request {
 
 
 const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) => {
-  const refreshToken = req.cookies.menteeRefreshToken
-  let menteeAccessToken = req.cookies.menteeAccessToken
+  const refreshToken = req.cookies.MENTEE_REFRESH_TOKEN
+  let menteeAccessToken = req.cookies.MENTEE_ACCESS_TOKEN
   console.log("inside the middle ware");
   
 
@@ -27,9 +28,9 @@ const menteeAuth = async (req: IAuthRequest, res: Response, next: NextFunction) 
   if (!menteeAccessToken || menteeAccessToken === '' || Object.keys(menteeAccessToken).length === 0) {
     try {
       const newMenteeAccessToken = await refreshAccessToken(refreshToken)
-      res.cookie("menteeAccessToken", newMenteeAccessToken, {
+      res.cookie(CommonCode.MENTEE_ACCESS_TOKEN, newMenteeAccessToken, {
         httpOnly: true,
-        maxAge: 1800000,
+        maxAge: 360000,
       })
       menteeAccessToken = newMenteeAccessToken
 

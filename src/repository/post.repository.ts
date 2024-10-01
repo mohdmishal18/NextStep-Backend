@@ -161,6 +161,45 @@ async unlikePost(userid: string, postid: string): Promise<any> {
   }
 }
 
+async searchPosts(query: string): Promise<IPost[]> {
+  try {
+      const posts = await this.post.aggregate([
+          {
+              $lookup: {
+                  from: "skills", // The Skills collection name
+                  localField: "tags",
+                  foreignField: "_id",
+                  as: "tagDetails",
+              },
+          },
+          {
+              $match: {
+                  $or: [
+                      { title: { $regex: query, $options: "i" } }, // Case-insensitive title search
+                      { "tagDetails.name": { $regex: query, $options: "i" } }, // Case-insensitive tag name search
+                  ],
+              },
+          },
+          {
+              $project: {
+                  userid: 1,
+                  title: 1,
+                  tags: 1,
+                  image: 1,
+                  content: 1,
+                  likes: 1,
+                  createdAt: 1,
+                  updatedAt: 1,
+              },
+          },
+      ]);
+
+      return posts;
+  } catch (error) {
+      throw new Error("Failed to search posts");
+  }
+}
+
 
   
 }

@@ -275,17 +275,14 @@ export class MenteeUseCase implements IMenteeUseCase {
     }
   }
 
-  async search(query: string): Promise<{ users: IMentee[], posts: IPost[] }> {
+  async searchMentees(query: string): Promise<IMentee[]> {
     try {
-        const [users, posts] = await Promise.all([
-            this.menteeRepository.searchMentees(query),
-            this.menteeRepository.searchPosts(query),
-        ]);
-
-        return { users, posts };
+      const mentee =  await this.menteeRepository.searchMentees(query)
+      return mentee
     } catch (error) {
-        throw new Error("Failed to search");
+      console.error("Error in finding mentee:", error);
+      throw new Error("Failed to find mentee by ID");
     }
-}
+  }
 
 }

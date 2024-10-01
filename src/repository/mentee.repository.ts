@@ -154,45 +154,6 @@ export class MenteeRepository implements IMenteeRepository {
     }
     
 
-    async searchPosts(query: string): Promise<IPost[]> {
-        try {
-            const posts = await PostModel.aggregate([
-                {
-                    $lookup: {
-                        from: "skills", // The Skills collection name
-                        localField: "tags",
-                        foreignField: "_id",
-                        as: "tagDetails",
-                    },
-                },
-                {
-                    $match: {
-                        $or: [
-                            { title: { $regex: query, $options: "i" } }, // Case-insensitive title search
-                            { "tagDetails.name": { $regex: query, $options: "i" } }, // Case-insensitive tag name search
-                        ],
-                    },
-                },
-                {
-                    $project: {
-                        userid: 1,
-                        title: 1,
-                        tags: 1,
-                        image: 1,
-                        content: 1,
-                        likes: 1,
-                        createdAt: 1,
-                        updatedAt: 1,
-                    },
-                },
-            ]);
-    
-            return posts;
-        } catch (error) {
-            throw new Error("Failed to search posts");
-        }
-    }
-
     // Function to find the mentee by ID
     async findMenteeById(menteeId: string): Promise<IMentee> {
         try {
@@ -206,45 +167,6 @@ export class MenteeRepository implements IMenteeRepository {
             throw new Error("Failed to fetch mentee");
         }
     }
-
-    // // Function to fetch posts by mentee's ID
-    // async findPostsByMenteeId(menteeId: string): Promise<IPost[]> {
-    //     try {
-    //         const posts = await this.post.aggregate([
-    //             {
-    //                 $match: {
-    //                     userid: menteeId // Match posts by mentee ID
-    //                 }
-    //             },
-    //             {
-    //                 $lookup: {
-    //                     from: "skills", // The Skills collection name
-    //                     localField: "tags", // Field in the posts collection
-    //                     foreignField: "_id", // Field in the skills collection
-    //                     as: "tagDetails" // Output array field for the joined data
-    //                 }
-    //             },
-    //             {
-    //                 $project: {
-    //                     userid: 1,
-    //                     title: 1,
-    //                     tags: 1,
-    //                     tagDetails: 1, // Include the looked-up tag details
-    //                     image: 1,
-    //                     content: 1,
-    //                     likes: 1,
-    //                     createdAt: 1,
-    //                     updatedAt: 1
-    //                 }
-    //             }
-    //         ]);
-    
-    //         return posts;
-    //     } catch (error) {
-    //         console.error("Error fetching posts with tags:", error);
-    //         throw new Error("Failed to fetch posts with tag details");
-    //     }
-    // }
     
     
 }

@@ -16,7 +16,6 @@ export class MenteeController {
     }
 
     async signup(req: Request, res: Response) {
-
         try {
 
             const {name , email,phone, password} = req.body;
@@ -45,10 +44,10 @@ export class MenteeController {
 
           if (response?.status && response.message == "Login Succesfully") {
             const { token, refreshToken } = response;
-            res.cookie("menteeAccessToken", token, {
+            res.cookie(CommonCode.MENTEE_ACCESS_TOKEN, token, {
               httpOnly: true,
               maxAge: 360000,
-            }).cookie("menteeRefreshToken", refreshToken, {
+            }).cookie(CommonCode.MENTEE_REFRESH_TOKEN, refreshToken, {
               httpOnly: true,
               maxAge: 30 * 24 * 60 * 60 * 1000,
             })
@@ -81,7 +80,7 @@ export class MenteeController {
 
       async logout(req: Request, res: Response) {
         try {
-          res.cookie("menteeRefreshToken", "", { httpOnly: true, expires: new Date() }).cookie("menteeRefreshToken", "", { httpOnly: true, expires: new Date() })
+          res.cookie(CommonCode.MENTEE_ACCESS_TOKEN, "", { httpOnly: true, expires: new Date() }).cookie(CommonCode.MENTEE_REFRESH_TOKEN, "", { httpOnly: true, expires: new Date() })
           res.status(200).json({ status: true });
         } catch (error) {
           res.json(error);
@@ -101,7 +100,7 @@ export class MenteeController {
                 return;
             }
 
-            res.cookie("menteeAccessToken", response.token, { httpOnly: true, maxAge: 360000 }).cookie("menteeRefreshToken", response.refreshToken, {
+            res.cookie(CommonCode.MENTEE_ACCESS_TOKEN, response.token, { httpOnly: true, maxAge: 360000 }).cookie(CommonCode.MENTEE_REFRESH_TOKEN, response.refreshToken, {
                 httpOnly: true,
                 maxAge: 30 * 24 * 60 * 60 * 1000,
             })
@@ -179,14 +178,14 @@ export class MenteeController {
 
       if (response?.status && response?.message == "google Login succesfull") {
         const { token, refreshToken } = response;
-        res.cookie("menteeAccessToken", token, {
+        res.cookie(CommonCode.MENTEE_ACCESS_TOKEN, token, {
           httpOnly: true,
           maxAge: 360000,
-        }).cookie("menteeRefreshToken", refreshToken, {
+        }).cookie(CommonCode.MENTEE_REFRESH_TOKEN, refreshToken, {
           httpOnly: true,
           maxAge: 30 * 24 * 60 * 60 * 1000
         })
-        return res.status(200).json(response);
+        return res.status(200).json(response)
       } else {
         return res.status(403).json(response)
       }
@@ -207,10 +206,10 @@ export class MenteeController {
         
         if (response?.status) {
           const { token, refreshToken } = response;
-          res.cookie("menteeAccessToken", token, {
+          res.cookie(CommonCode.MENTEE_ACCESS_TOKEN, token, {
             httpOnly: true,
             maxAge: 360000,
-          }).cookie("menteeRefreshToken", refreshToken, {
+          }).cookie(CommonCode.MENTEE_REFRESH_TOKEN, refreshToken, {
             httpOnly: true,
             maxAge: 30 * 24 * 60 * 60 * 1000,
           })
@@ -219,7 +218,8 @@ export class MenteeController {
           res.status(403).json(response)
         }
       } catch (error) {
-  
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        res.status(500).json({ status: false, message: errorMessage });
       }
     }
 
@@ -239,25 +239,15 @@ export class MenteeController {
           res.status(500).json({ status: false, message: errorMessage });
       }
   }
-  
-  
-    async search(req: Request, res: Response) {
-      try {
-          const { query } = req.body;
 
-          if (!query || query.trim() === "") {
-              return res.status(400).json({ status: false, message: "Search query is required" });
-          }
-
-          const results = await this.menteeUseCase.search(query);
-
-          res.status(200).json({ status: true, message: "Search results fetched successfully", data: results });
-      } catch (error) {
-          console.error("Error in search controller:", error);
-          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-          const errorCode = (error as any).code || 500;
-          res.status(errorCode).json(MenteePresenter.ErrorRes({ message: errorMessage, code: errorCode }));
-      }
+  async searchMentees(req: Request, res: Response) {
+    try {
+      const { query } = req.body
+      const mentees = await this.menteeUseCase.searchMentees(query)
+      res.status(200).json({status: true, mentees: mentees})
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      res.status(500).json({ status: false, message: errorMessage });
+    }
   }
-
 }
