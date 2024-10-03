@@ -19,6 +19,7 @@ export default class PostController implements IPostController {
         this.editPost = this.editPost.bind(this)
         this.likePost = this.likePost.bind(this)
         this.unlikePost = this.unlikePost.bind(this)
+        this.reportPost = this.reportPost.bind(this)
     }
 
     async createPost(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -98,6 +99,18 @@ export default class PostController implements IPostController {
             res.status(200).json({status:"success",data:like})
         } catch (error) {
             next(error)
+        }
+    }
+
+    // New method for reporting a post
+    async reportPost(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { postId, reason, userId } = req.body; // Extracting postId, reason, and userId from the request body
+
+            await this.postUsecase.reportPost(userId, postId, reason);
+            res.status(201).json({ status: 'success', message: "Post reported successfully" });
+        } catch (error) {
+            next(error);
         }
     }
 

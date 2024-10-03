@@ -21,3 +21,11 @@ export interface IPostLike extends Document {
     user_id: string;  // The ID of the user who liked the post
     post_id: string;  // The ID of the post that was liked
   }
+
+  export interface IReport {
+    userId: mongoose.Schema.Types.ObjectId; // User who reported
+    postId: mongoose.Schema.Types.ObjectId;  // Post being reported
+    reason: string;                           // Reason for the report
+    createdAt?: Date;                        // Optional, added by Mongoose
+    updatedAt?: Date;                        // Optional, added by Mongoose
+}

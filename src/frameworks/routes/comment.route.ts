@@ -15,5 +15,11 @@ router.get('/get-comment/:id',menteeAuth,(req: Request, res: Response, next: Nex
 router.post('/create-comment',menteeAuth,(req: Request, res: Response, next: NextFunction)=>{
     commentController.addComment(req,res,next)
 })
+router.post('/edit-comment',menteeAuth,(req: Request, res: Response, next:NextFunction) => {
+    commentController.editComment(req,res, next)
+})
+router.post('/delete-comment',menteeAuth,(req: Request, res:Response, next: NextFunction) => {
+    commentController.deleteComment(req, res, next)
+})
 
 export default router

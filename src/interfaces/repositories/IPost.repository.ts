@@ -14,4 +14,5 @@ export interface IPostRepository {
     isPostLikedByUser(userid: string, postid: string): Promise<Boolean>;
     // getlikedUsers(userid: string,postid: string): Promise<ILikedUser[]>
     count(userid: string): Promise<number>
+    createReport(userId: string, postId: string, reason: string): Promise<void>
 }

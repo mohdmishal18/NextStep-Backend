@@ -31,7 +31,7 @@ router.post('/login', adminController.login)
 router.post('/logout', adminController.logout)
 
 //skill management
-router.get('/get-skills',adminAuth,adminController.getAllSkills)
+router.get('/get-skills',adminController.getAllSkills)
 router.post('/add-skill',adminController.addSkill)
 router.patch('/list-skill', adminController.listSkill)
 router.patch('/edit-skill', adminController.editSkill)

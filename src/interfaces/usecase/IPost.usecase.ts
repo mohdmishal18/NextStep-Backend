@@ -8,4 +8,5 @@ export interface IPostUsecase{
     editPost(data: Partial<IPost>):Promise<IPost>
     likePost(userid: string , postid: string): Promise<any>
     unlikePost(userid: string , postid: string): Promise<any>   
+    reportPost(userId: string, postId: string, reason: string): Promise<void>
 }

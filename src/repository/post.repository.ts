@@ -2,13 +2,17 @@ import { Model } from "mongoose";
 import { IPostRepository } from "../interfaces/repositories/IPost.repository";
 import { IPost } from "../entities/post.entity";
 import { IPostLike } from "../entities/post.entity";
+import { IReport } from "../entities/post.entity";
+
 
 export default class PostRepository implements IPostRepository {
   private post: Model<IPost>;
   private like: Model<IPostLike>
-  constructor(post: Model<IPost>, like: Model<IPostLike>) {
+  private report: Model<IReport>
+  constructor(post: Model<IPost>, like: Model<IPostLike>, report: Model<IReport>) {
     this.post = post;
     this.like = like
+    this.report = report
   }
 
   async createPost(data: IPost): Promise<IPost> {
@@ -200,6 +204,22 @@ async searchPosts(query: string): Promise<IPost[]> {
   }
 }
 
+
+async createReport(userId: string, postId: string, reason: string): Promise<void> {
+  try {
+    const newReport = new this.report({
+      userId,  // Use the userId parameter
+      postId,  // Use the postId parameter
+      reason,  // Use the reason parameter
+    });
+
+    await newReport.save(); // Save the report to the database
+    console.log("Report created successfully:", newReport);
+  } catch (error) {
+    console.error("Error creating report:", error);
+    throw error; // Rethrow the error to handle it later
+  }
+}
 
   
 }

@@ -6,10 +6,11 @@ import PostUsecase from '../../usecase/post.usecase'
 import PostRepository from '../../repository/post.repository'
 import PostModel from '../models/post.model'
 import LikeModel from '../models/postLike.model'
+import ReportModel from '../models/report.model'
 
 const router: Router = express.Router()
 
-const postRepository = new PostRepository(PostModel, LikeModel)
+const postRepository = new PostRepository(PostModel, LikeModel, ReportModel)
 const postUsecase = new PostUsecase(postRepository)
 const postController = new PostController(postUsecase)
 
@@ -21,5 +22,6 @@ router.post('/delete-post',menteeAuth, postController.deletePost)
 router.put('/edit-post',menteeAuth,postController.editPost)
 router.post('/like-post',menteeAuth, postController.likePost)
 router.post('/unlike-post',menteeAuth, postController.unlikePost)
+router.post('/report',menteeAuth, postController.reportPost)
 
 export default router

@@ -14,4 +14,14 @@ export class CommentUsecase implements ICommentUsecase{
         
         return await this.commentRepository.createComment(author_id,post_id,content)
     }
+
+     // Add editComment use case
+     async editComment(commentId: string, content: string): Promise<IComment | null> {
+        return await this.commentRepository.editComment(commentId, content);
+    }
+
+    // Add deleteComment use case
+    async deleteComment(commentId: string): Promise<IComment | null> {
+        return await this.commentRepository.deleteComment(commentId);
+    }
 }

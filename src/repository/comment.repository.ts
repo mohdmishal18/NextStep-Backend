@@ -28,4 +28,21 @@ export class CommentRepository implements ICommentRepository{
         return savedComment
     }
 
+    // Edit a comment
+    async editComment(commentId: string, content: string): Promise<IComment | null> {
+        const updatedComment = await CommentModel.findByIdAndUpdate(
+            commentId,
+            { content },
+            { new: true }
+        );
+        return updatedComment;
+    }
+
+    // Delete a comment
+    async deleteComment(commentId: string): Promise<IComment | null> {
+        const deletedComment = await CommentModel.findByIdAndDelete(commentId);
+        return deletedComment;
+    }
+
+
 }
