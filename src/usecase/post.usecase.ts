@@ -93,9 +93,9 @@ export default class PostUsecase implements IPostUsecase {
         }
     }
 
-    async reportPost(userId: string, postId: string, reason: string): Promise<void> {
+    async reportPost( postId: string,userId: string, reason: string): Promise<void> {
         try {
-            await this.postRepository.createReport(userId, postId, reason);
+            await this.postRepository.createReport( postId,userId, reason);
         } catch (error) {
             throw error;
         }

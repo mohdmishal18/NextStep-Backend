@@ -205,12 +205,12 @@ async searchPosts(query: string): Promise<IPost[]> {
 }
 
 
-async createReport(userId: string, postId: string, reason: string): Promise<void> {
+async createReport( postId: string,userId: string, reason: string): Promise<void> {
   try {
     const newReport = new this.report({
-      userId,  // Use the userId parameter
-      postId,  // Use the postId parameter
-      reason,  // Use the reason parameter
+      userId: userId, 
+      postId: postId,  
+      reason: reason,  
     });
 
     await newReport.save(); // Save the report to the database

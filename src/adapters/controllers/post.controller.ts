@@ -105,9 +105,9 @@ export default class PostController implements IPostController {
     // New method for reporting a post
     async reportPost(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { postId, reason, userId } = req.body; // Extracting postId, reason, and userId from the request body
-
-            await this.postUsecase.reportPost(userId, postId, reason);
+            const { postid, reason, userid } = req.body;
+            console.log(req.body, " report post in controller")
+            await this.postUsecase.reportPost( postid,userid, reason);
             res.status(201).json({ status: 'success', message: "Post reported successfully" });
         } catch (error) {
             next(error);
