@@ -7,6 +7,7 @@ import PostRepository from '../../repository/post.repository'
 import PostModel from '../models/post.model'
 import LikeModel from '../models/postLike.model'
 import ReportModel from '../models/report.model'
+import adminAuth from '../middlewares/admin.auth'
 
 const router: Router = express.Router()
 
@@ -22,6 +23,10 @@ router.post('/delete-post',menteeAuth, postController.deletePost)
 router.put('/edit-post',menteeAuth,postController.editPost)
 router.post('/like-post',menteeAuth, postController.likePost)
 router.post('/unlike-post',menteeAuth, postController.unlikePost)
+
 router.post('/report',menteeAuth, postController.reportPost)
+router.get('/report', adminAuth,postController.getReports)
+
+router.post('/hide-post',adminAuth, postController.hidePost)
 
 export default router

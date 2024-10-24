@@ -9,6 +9,7 @@ export interface IPost {
     tags: mongoose.Schema.Types.ObjectId[];
     content: string;
     likes: number
+    isBlocked: boolean
 }
 
 // export interface ISave extends Document{

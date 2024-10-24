@@ -221,5 +221,41 @@ async createReport( postId: string,userId: string, reason: string): Promise<void
   }
 }
 
+async getReports(): Promise<IReport[]> {
+  try {
+      const reports = await this.report.find()
+      .populate({
+        path: 'postId',  // Populate the post details
+        select: 'title content',  // Fields from the post document to include
+      })
+      .populate({
+        path: 'userId',  // Populate the user who reported
+        select: 'name email',  // Fields from the user document to include
+      })
+      .exec();  // Execute the query
+
+      console.log(reports, "reposts in the repo");
+
+    return reports;
+  } catch (error) {
+    console.error("Error fetching reports:", error);
+    throw error; // Rethrow the error to handle it later
+  }
+}
+
+async hidePost(postid: string, status: boolean): Promise<any> {
+  try {
+
+    return await this.post.findOneAndUpdate({
+      post_id: postid, isBlocked: status
+    })
+
+
+  } catch (error) {
+    throw error
+  }
+}
+
+
   
 }

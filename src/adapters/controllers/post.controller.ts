@@ -20,6 +20,8 @@ export default class PostController implements IPostController {
         this.likePost = this.likePost.bind(this)
         this.unlikePost = this.unlikePost.bind(this)
         this.reportPost = this.reportPost.bind(this)
+        this.getReports = this.getReports.bind(this)
+        this.hidePost = this.hidePost.bind(this)
     }
 
     async createPost(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -82,7 +84,7 @@ export default class PostController implements IPostController {
         }
     }
 
-    async likePost(req: Request,res: Response, next: NextFunction){
+    async likePost(req: Request,res: Response, next: NextFunction): Promise<void>{
         try {
             const {postid,userid} = req.body
             const like = await this.postUsecase.likePost(userid,postid);
@@ -91,7 +93,7 @@ export default class PostController implements IPostController {
             next(error)
         }
     }
-    async unlikePost(req: Request,res: Response, next: NextFunction){
+    async unlikePost(req: Request,res: Response, next: NextFunction): Promise<void>{
         try {
             
             const {postid,userid} = req.body
@@ -109,6 +111,28 @@ export default class PostController implements IPostController {
             console.log(req.body, " report post in controller")
             await this.postUsecase.reportPost( postid,userid, reason);
             res.status(201).json({ status: 'success', message: "Post reported successfully" });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getReports(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const reports = await this.postUsecase.getReports();
+            console.log("reports in the controller" ,reports)
+            res.status(201).json({ status: 'success', reports: reports});
+        } catch (error) {
+            next(error);
+        }
+    }
+    
+
+    async hidePost(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { postid, status } = req.body;
+            console.log(req.body, " status of post")
+            await this.postUsecase.hidePost(postid,status);
+            res.status(201).json({ status: 'success', message: "Post hided successfully" });
         } catch (error) {
             next(error);
         }

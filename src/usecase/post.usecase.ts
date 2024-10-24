@@ -1,4 +1,5 @@
-import { IPost, IPostLike } from "../entities/post.entity";
+
+import { IPost, IPostLike, IReport } from "../entities/post.entity";
 import { IPostRepository } from "../interfaces/repositories/IPost.repository";
 import { IPostUsecase } from "../interfaces/usecase/IPost.usecase";
 
@@ -96,6 +97,22 @@ export default class PostUsecase implements IPostUsecase {
     async reportPost( postId: string,userId: string, reason: string): Promise<void> {
         try {
             await this.postRepository.createReport( postId,userId, reason);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getReports(): Promise<IReport[] | null> {
+        try {
+            return await this.postRepository.getReports()
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async hidePost(postid: string, status: boolean): Promise<void> {
+        try {
+            await this.postRepository.hidePost( postid, status );
         } catch (error) {
             throw error;
         }

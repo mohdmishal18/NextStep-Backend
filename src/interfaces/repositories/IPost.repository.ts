@@ -1,5 +1,5 @@
 import { ILikedUser } from "../../entities/mentee.entity";
-import { IPost, IPostLike } from "../../entities/post.entity";
+import { IPost, IPostLike, IReport } from "../../entities/post.entity";
 
 export interface IPostRepository {
     createPost(data: IPost): Promise<IPost>
@@ -15,4 +15,6 @@ export interface IPostRepository {
     // getlikedUsers(userid: string,postid: string): Promise<ILikedUser[]>
     count(userid: string): Promise<number>
     createReport(userId: string, postId: string, reason: string): Promise<void>
+    getReports(): Promise<IReport[]>
+    hidePost(postid: string, status: boolean): Promise<void>
 }
