@@ -122,7 +122,7 @@ export default class AdminRepository implements IAdminRepository {
   async getAllApplications(): Promise<IMentor[]> {
     try {
       const mentors = await this.mentor
-        .find({ status: "pending" })
+        .find({ $or: [{ status: "pending" }, { status: "rejected" }] })
         .populate('skills', 'name') 
         .sort({ _id: -1 });
       return mentors;
