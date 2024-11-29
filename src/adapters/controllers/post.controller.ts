@@ -12,6 +12,7 @@ export default class PostController implements IPostController {
         postUsecase: IPostUsecase
     ) {
         this.postUsecase = postUsecase
+        
         this.createPost = this.createPost.bind(this)
         this.getAllPosts = this.getAllPosts.bind(this)
         this.userPosts = this.userPosts.bind(this)
@@ -58,8 +59,8 @@ export default class PostController implements IPostController {
 
     async deletePost(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const {id} = req.body
-            const result = await this.postUsecase.deletePost(id)
+            const {id, publicId} = req.body
+            const result = await this.postUsecase.deletePost(id, publicId)
             console.log(result , 'in controler')
             res.status(201).json({ status: 'success', posts: result})
         } catch (error) {

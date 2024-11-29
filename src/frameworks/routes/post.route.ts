@@ -8,11 +8,13 @@ import PostModel from '../models/post.model'
 import LikeModel from '../models/postLike.model'
 import ReportModel from '../models/report.model'
 import adminAuth from '../middlewares/admin.auth'
+import { CloudinaryService } from '../utils/CloudinaryService'
 
 const router: Router = express.Router()
 
 const postRepository = new PostRepository(PostModel, LikeModel, ReportModel)
-const postUsecase = new PostUsecase(postRepository)
+const cloudinaryService = new CloudinaryService();
+const postUsecase = new PostUsecase(postRepository, cloudinaryService)
 const postController = new PostController(postUsecase)
 
 //route for mentees

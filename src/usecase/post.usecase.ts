@@ -2,14 +2,18 @@
 import { IPost, IPostLike, IReport } from "../entities/post.entity";
 import { IPostRepository } from "../interfaces/repositories/IPost.repository";
 import { IPostUsecase } from "../interfaces/usecase/IPost.usecase";
+import { CloudinaryService } from "../frameworks/utils/CloudinaryService";
 
 export default class PostUsecase implements IPostUsecase {
     private postRepository: IPostRepository
+    private cloudinaryService: CloudinaryService
 
     constructor(
-        postRepository: IPostRepository
+        postRepository: IPostRepository,
+        cloudinaryService: CloudinaryService
     ) {
         this.postRepository = postRepository
+        this.cloudinaryService = cloudinaryService
     }
 
     async createPost(data: IPost): Promise<IPost> {
@@ -37,9 +41,12 @@ export default class PostUsecase implements IPostUsecase {
         }
     }
 
-    async deletePost(id: string): Promise<IPost | null> {
+    async deletePost(id: string, publicId: string ): Promise<IPost | null> {
         try {
-            return await this.postRepository.deletePost(id)
+            const result = await this.postRepository.deletePost(id)
+            const deleteImage = this.cloudinaryService.deleteImage(publicId, 'NextStepPosts')
+
+            return result
         } catch (error) {
             throw error;
         }

@@ -1,8 +1,12 @@
+import "reflect-metadata";
 import express, { Express } from "express";
 import cors from 'cors'
 import logger from 'morgan'
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+
+//errorHandler
+import { errorHandler } from "../middlewares/errorHandler";
 
 //Routes
 import menteeRouter from '../routes/mentee.route'
@@ -11,6 +15,7 @@ import adminRouter from '../routes/admin.route'
 import postRouter from '../routes/post.route'
 import commentRouter from '../routes/comment.route'
 import followRouter from '../routes/follow.route'
+import blogRouter from '../routes/blog.route'
 
 
 // Load environment variables from .env file
@@ -45,5 +50,8 @@ app.use('/api/admin',adminRouter)
 app.use('/api/posts', postRouter)
 app.use('/api/comments', commentRouter)
 app.use('/api/follows',followRouter)
+app.use('/api/blog',blogRouter)
+
+app.use(errorHandler)
 
 export default app;

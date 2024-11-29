@@ -1,11 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import JwtToken from "../utils/jwtService";
-import MentorModel from "../models/mentor.model";
-import MentorRepository from "../../repository/mentor.repository";
-
+import { DecodedJwt } from "../../interfaces/utils/jwtService";
 
 const jwtService = new JwtToken()
-const userRepo = new MentorRepository(MentorModel)
 
 interface IAuthRequest extends Request {
   userId?: string;
@@ -38,6 +35,10 @@ const mentorAuth = async (req: IAuthRequest, res: Response, next: NextFunction) 
     }
    
   }
+
+  const userData = jwtService.verifyToken(refreshToken) as DecodedJwt
+
+  req.userId = userData.userId
 
   next()
 

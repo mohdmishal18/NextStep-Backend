@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import IAdmin from "../../entities/admin.entity";
 
+
 // Explicitly defining the schema using the IAdmin interface
 const AdminSchema: Schema<IAdmin> = new mongoose.Schema({
     

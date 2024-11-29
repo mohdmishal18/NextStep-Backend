@@ -11,7 +11,6 @@ export default interface IMentor extends Document {
     jobTitle: string;
     company: string;
     location: string;
-    // category?: string;
     skills: string;
     bio: string;
     linkedInUrl: string;
