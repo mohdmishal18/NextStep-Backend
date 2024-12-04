@@ -1,28 +1,52 @@
 import { Request, Response, NextFunction } from "express";
+import { AuthenticatedRequest } from "../../frameworks/middlewares/mentor.auth";
 import { successResponse } from "../../frameworks/utils/response";
 import { HttpStatus } from "../../enums/httpCode";
-import { inject, injectable } from "inversify"; // Import the decorators from Inversify
 import IBlogController from "../../interfaces/controller/IBlog.controller";
 import { IBlogUsecase } from "../../interfaces/usecase/IBlog.usecase";
 import { IBlog } from "../../entities/blog.entity";
-import { TYPES } from "../../frameworks/configs/types";
+import { IJwtPayload } from "../../interfaces/usecase/IMentee.usercase";
+import mongoose from "mongoose";
 
-@injectable() 
 export default class BlogController implements IBlogController {
-    private blogUsecase: IBlogUsecase;
+    private blogUsecase;
 
-    // Use the @inject decorator to inject the dependency into the constructor
-    constructor(@inject(TYPES.IBlogUsecase) blogUsecase: IBlogUsecase) {
-        this.blogUsecase = blogUsecase;
+    constructor(blogUsecase: IBlogUsecase) {
+        this.blogUsecase = blogUsecase
     }
 
-    create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    fetch = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const blogs = await this.blogUsecase.fetch()
+            res.status(HttpStatus.OK).json(successResponse(blogs,"feched blog Successfully."))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    create = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
         try {
             const data: IBlog = req.body;
+            const user = req.user as IJwtPayload
+            data.authorId = new mongoose.Types.ObjectId(user.userId);
             const createdBlog = await this.blogUsecase.create(data);
-            res.status(HttpStatus.CREATED).json(successResponse(createdBlog, "Blog created Successfully"));
+            res.status(HttpStatus.CREATED).json(successResponse(createdBlog, "Blog created Successfully"))
         } catch (error) {
-            next(error);
+            next(error)
         }
-    };
+    }
+
+    fetchById = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { id } = req.params;
+            console.log(id,"blog id in the controller")
+            const blog = await this.blogUsecase.fetchById(id)
+            res.status(HttpStatus.OK).json(successResponse(blog,"feched blog Successfully."))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
+    
 }

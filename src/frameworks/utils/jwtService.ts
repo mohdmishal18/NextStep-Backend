@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken"
 import jwtService, { DecodedJwt, tokenData, tokenForgotData } from '../../interfaces/utils/jwtService'
+import { IJwtPayload } from "../../interfaces/usecase/IMentee.usercase"
 
 export default class JwtToken implements jwtService {
 
@@ -33,15 +34,16 @@ export default class JwtToken implements jwtService {
   }
 
   // verifying JWT Token
-  verifyToken(token: string): DecodedJwt | null {
+  verifyToken(token: string): IJwtPayload | null {
     try {
       let secretKey = process.env.JWT_ACCESS_TOKEN_SECRET
-      let decoded = jwt.verify(token, secretKey!) as DecodedJwt
+      let decoded = jwt.verify(token, secretKey!) as IJwtPayload
       return decoded
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
         return null
       } else {
+        console.log("error in jwt verfiy", error)
         throw new Error("JWT verification Error")
       }
     }

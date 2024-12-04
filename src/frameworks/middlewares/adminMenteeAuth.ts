@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import JwtToken from "../utils/jwtService";
+import { IJwtPayload } from "../../interfaces/usecase/IMentee.usercase";
 
 const jwtService = new JwtToken();
 
@@ -43,7 +44,7 @@ const adminMenteeAuth = async (req: IAuthRequest, res: Response, next: NextFunct
   }
 
   try {
-    const decodedToken = jwtService.verifyToken(accessToken);
+    const decodedToken = jwtService.verifyToken(accessToken) as IJwtPayload
     
     // Ensure the decoded token exists before trying to access its properties
     if (decodedToken && decodedToken.userId && decodedToken.role) {

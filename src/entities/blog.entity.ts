@@ -4,9 +4,9 @@ export interface IBlog extends Document {
     _id: string;
     title: string;
     content: string;
-    authorId: mongoose.Schema.Types.ObjectId;
+    authorId: mongoose.Types.ObjectId;
     coverImage?: string;
-    tags?: mongoose.Schema.Types.ObjectId[];
+    tags?: mongoose.Types.ObjectId[];
     isPublished: boolean; 
     createdAt?: Date; 
     updatedAt?: Date;

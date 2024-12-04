@@ -1,7 +1,6 @@
 import { IBlog } from "../entities/blog.entity";
 import { IBlogUsecase } from "../interfaces/usecase/IBlog.usecase";
 import { IBlogRepository } from "../interfaces/repositories/IBlog.repository";
-import { error } from "console";
 
 export default class BlogUsecase implements IBlogUsecase {
   
@@ -11,11 +10,29 @@ export default class BlogUsecase implements IBlogUsecase {
         this.blogRepository = blogRepository
     }
 
+    async fetch(): Promise<IBlog[]> {
+        try {
+            const blogs = await this.blogRepository.fetch()
+            return blogs
+        } catch (error) {
+            throw error
+        }
+    }
+
     async create(data: IBlog): Promise<IBlog> {
         try {
             const blog = await this.blogRepository.create(data)
             return blog
         } catch (error) { 
+            throw error
+        }
+    }
+
+    async fetchById(blogId: string): Promise<IBlog> {
+        try {
+            const blog = await this.blogRepository.fetchById(blogId)
+            return blog
+        } catch (error) {
             throw error
         }
     }

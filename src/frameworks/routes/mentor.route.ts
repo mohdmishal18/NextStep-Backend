@@ -5,6 +5,9 @@ import MentorUsecase from '../../usecase/mentor.usecase'
 import MentorRepository from '../../repository/mentor.repository'
 import MentorModel from '../models/mentor.model'
 
+//middileware
+import mentorAuth from '../middlewares/mentor.auth'
+
 //utils
 import JwtToken from '../utils/jwtService'
 import HashingService from '../utils/hashingService'
@@ -22,6 +25,6 @@ const mentorController = new MentorController(mentorUsecase)
 router.post('/mentor-apply', mentorController.addMentor)
 router.post("/google-login", mentorController.googleLogin);
 router.post('/login',mentorController.login)
-router.post('/logout',mentorController.logout)
+router.post('/logout',mentorAuth,mentorController.logout)
 
 export default router

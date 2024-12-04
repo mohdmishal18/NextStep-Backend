@@ -34,8 +34,9 @@ export interface loginBody {
   }
 
   export interface IJwtPayload{
-    id: string,
-    user_id: string
+    userId: string,
+    name: string,
+    role: string
   }
 
 export interface IMenteeUseCase {

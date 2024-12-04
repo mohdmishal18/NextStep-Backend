@@ -1,3 +1,5 @@
+import { IJwtPayload } from "../usecase/IMentee.usercase";
+
 export interface tokenData {
     userId : string
     name : string
@@ -20,7 +22,7 @@ export interface tokenData {
   
   export default interface IjwtService {
     generateToken(data : tokenData):string
-    verifyToken(token:string):DecodedJwt|null
+    verifyToken(token:string):IJwtPayload|null
     generateTokenForgot(data:tokenData,expireTime:string):string
     generateRefreshToken(data:tokenData):string
   }
