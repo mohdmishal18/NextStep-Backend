@@ -5,4 +5,5 @@ export default interface IMentorController {
     logout(req: Request, res: Response, next: NextFunction): Promise<void>;
     login(req: Request, res: Response, next: NextFunction): Promise<void>;
     googleLogin(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>>
+    getMentorById(req: Request, res: Response, next: NextFunction): Promise<void>
 }

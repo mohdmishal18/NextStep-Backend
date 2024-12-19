@@ -26,5 +26,6 @@ router.post('/mentor-apply', mentorController.addMentor)
 router.post("/google-login", mentorController.googleLogin);
 router.post('/login',mentorController.login)
 router.post('/logout',mentorAuth,mentorController.logout)
+router.get('/:id',mentorController.getMentorById)
 
 export default router

@@ -39,13 +39,26 @@ export default class BlogController implements IBlogController {
     fetchById = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params;
-            console.log(id,"blog id in the controller")
             const blog = await this.blogUsecase.fetchById(id)
             res.status(HttpStatus.OK).json(successResponse(blog,"feched blog Successfully."))
         } catch (error) {
             next(error)
         }
     }
+
+    edit = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { id } = req.params
+            const { blogData } = req.body;
+            console.log(id, blogData,"data and id in the controller")
+            const blog = await this.blogUsecase.edit(id, blogData)
+            res.status(HttpStatus.OK).json(successResponse(blog,"feched blog Successfully."))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    
 
 
     

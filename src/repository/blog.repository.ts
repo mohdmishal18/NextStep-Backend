@@ -49,5 +49,24 @@ export default class BlogRepository implements IBlogRepository {
       throw new Error("Failed to fetch the blog");
     }
   }
+
+  async edit(blogId: string, data: Partial<IBlog>): Promise<IBlog> {
+    try {
+      const updatedBlog = await this.blog.findByIdAndUpdate(blogId, data, {
+        new: true, // Return the updated document
+        runValidators: true, // Ensure validation occurs during update
+      });
+  
+      if (!updatedBlog) {
+        throw new Error("Blog not found");
+      }
+  
+      return updatedBlog;
+    } catch (error) {
+      console.log("Error updating the blog", error);
+      throw new Error("Failed to update the blog");
+    }
+  }
+  
   
 }

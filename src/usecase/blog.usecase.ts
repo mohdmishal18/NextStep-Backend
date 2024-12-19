@@ -37,4 +37,13 @@ export default class BlogUsecase implements IBlogUsecase {
         }
     }
 
+    async edit(blogId: string, data: Partial<IBlog>): Promise<IBlog> {
+        try {
+            const blog = await this.blogRepository.edit(blogId, data)
+            return blog
+        } catch (error) {
+            throw error
+        }
+    }
+
 }

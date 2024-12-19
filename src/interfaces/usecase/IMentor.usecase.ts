@@ -24,4 +24,5 @@ export default interface IMentorUsecase {
   addMentor(data: IRegisterMentor): Promise<IMentor>
   GoogleLogin(data:googleLoginData):Promise<loginRes|null>
   loginAuthentication(data:loginBody):Promise<loginRes|null>
+  getMentorById(mentorId: string): Promise<IMentor | null>
 }

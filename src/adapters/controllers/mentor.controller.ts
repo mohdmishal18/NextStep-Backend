@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { CommonCode } from "../../enums/commonCodes";
 import IMentorController from "../../interfaces/controller/IMentor.controller";
 import IMentorUsecase from "../../interfaces/usecase/IMentor.usecase";
+import { cookieConfig } from "../../frameworks/configs/cookieConfig";
 
 export default class MentorController implements IMentorController {
   private mentorUsecase;
@@ -12,6 +13,7 @@ export default class MentorController implements IMentorController {
     this.logout = this.logout.bind(this);
     this.login = this.login.  bind(this);
     this.googleLogin = this.googleLogin.bind(this);
+    this.getMentorById = this.getMentorById.bind(this)
   }
 
   async addMentor(
@@ -58,14 +60,8 @@ export default class MentorController implements IMentorController {
       if (response?.status && response.message == "Login Succesfully") {
         const { token, refreshToken } = response;
         res
-          .cookie(CommonCode.MENTOR_ACCESS_TOKEN, token, {
-            httpOnly: true,
-            maxAge: 360000,
-          })
-          .cookie(CommonCode.MENTOR_REFRESH_TOKEN, refreshToken, {
-            httpOnly: true,
-            maxAge: 30 * 24 * 60 * 60 * 1000,
-          });
+          .cookie(CommonCode.MENTOR_ACCESS_TOKEN, token, cookieConfig.accessToken)
+          .cookie(CommonCode.MENTOR_REFRESH_TOKEN, refreshToken, cookieConfig.refreshToken);
         res
           .status(200)
           .json({
@@ -129,6 +125,16 @@ export default class MentorController implements IMentorController {
       return res.status(200).json(response);
     } else {
       return res.status(403).json(response);
+    }
+  }
+
+  async getMentorById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const {id} = req.params
+      const mentor = await this.mentorUsecase.getMentorById(id)
+      res.status(201).json({ status: true, MentorData: mentor });
+    } catch (error) {
+      
     }
   }
 }

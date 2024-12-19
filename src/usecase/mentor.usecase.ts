@@ -35,6 +35,15 @@ export default class MentorUsecase implements IMentorUsecase {
         }
     }
 
+    async getMentorById(mentorId: string): Promise<IMentor | null> {
+      try {
+          return await this.mentorRepository.getMentorById(mentorId)
+      } catch (error) {
+          console.log(error)
+          throw(error)
+      }
+  }
+
     // login
   async loginAuthentication(data: loginBody) {
     try {
