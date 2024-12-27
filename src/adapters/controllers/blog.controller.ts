@@ -49,9 +49,9 @@ export default class BlogController implements IBlogController {
     edit = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
         try {
             const { id } = req.params
-            const { blogData } = req.body;
-            console.log(id, blogData,"data and id in the controller")
-            const blog = await this.blogUsecase.edit(id, blogData)
+            const {  } = req.body;
+            console.log(id, req.body,"data and id in the controller")
+            const blog = await this.blogUsecase.edit(id, req.body)
             res.status(HttpStatus.OK).json(successResponse(blog,"feched blog Successfully."))
         } catch (error) {
             next(error)
