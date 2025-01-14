@@ -8,5 +8,7 @@ const router: Router = express.Router()
 
 router.get('/',mentorAuth,subscriptionController.fetch)
 router.post('/create',mentorAuth,subscriptionController.create)
+router.put('/edit/:id',mentorAuth,subscriptionController.edit)
+router.delete('/delete/:id',mentorAuth, subscriptionController.delete)
 
 export default router;

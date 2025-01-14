@@ -26,4 +26,22 @@ export default class SubscriptionUsecase implements ISubscriptionUsecase {
             throw error
         }
     }
+
+    async edit(id: string,data: Partial<ISubscription>): Promise<ISubscription> {
+        try {
+            const blog = await this.subscriptionRepository.edit(id,data)
+            return blog
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async delete(id: string): Promise<ISubscription> {
+        try {
+            const blog = await this.subscriptionRepository.delete(id)
+            return blog
+        } catch (error) {
+            throw error
+        }
+    }
 }

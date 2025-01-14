@@ -36,4 +36,26 @@ export default class SubscriptionController implements ISubscriptionController {
             next(error)
         }
     }
+
+    edit = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { id } = req.params
+            // const {  } = req.body;
+            console.log(id, req.body,"data and id in the controller")
+            const blog = await this.subscriptionUsecase.edit(id, req.body)
+            res.status(HttpStatus.OK).json(successResponse(blog,"edited blog Successfully."))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    delete = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { id } = req.params
+            const blog = await this.subscriptionUsecase.delete(id)
+            res.status(HttpStatus.OK).json(successResponse(blog,"deleted subscription successfully"))
+        } catch (error) {
+            next(error)
+        }
+    }
 }

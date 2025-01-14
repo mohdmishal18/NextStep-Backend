@@ -46,11 +46,6 @@ const mentorSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  // category: {
-  //   type: String,
-  //   required: true,
-  //   trim: true
-  // },
   skills: [{
     type: Schema.Types.ObjectId,
     ref: 'Skills', 
@@ -78,6 +73,10 @@ const mentorSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true
+  },
+  rating : {
+    type: Number,
+    default: 0,
   },
   isBlocked: {
     type: Boolean,

@@ -17,6 +17,7 @@ import commentRouter from '../routes/comment.route'
 import followRouter from '../routes/follow.route'
 import blogRouter from '../routes/blog.route'
 import subscriptionRouter from '../routes/subscription.route'
+import searchRouter from '../routes/search.route'
 
 
 // Load environment variables from .env file
@@ -53,6 +54,7 @@ app.use('/api/comments', commentRouter)
 app.use('/api/follows',followRouter)
 app.use('/api/blog',blogRouter)
 app.use('/api/subscription',subscriptionRouter)
+app.use('/api/search',searchRouter)
 
 app.use(errorHandler)
 

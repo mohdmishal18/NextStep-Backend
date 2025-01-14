@@ -12,5 +12,6 @@ router.get('/',blogController.fetch)
 router.post('/create', mentorAuth, blogController.create);
 router.get('/:id',mentorAuth,blogController.fetchById);
 router.put('/edit/:id',mentorAuth, blogController.edit)
+// router.delete('/delete/:id',mentorAuth, blogController.delete)
 
 export default router;

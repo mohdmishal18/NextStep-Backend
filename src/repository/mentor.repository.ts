@@ -24,7 +24,7 @@ export default class MentorRepository implements IMentorRepository {
     }
 
     async getMentorById(mentorId: string): Promise<IMentor | null> {
-        return await this.mentor.findById(mentorId)
+        return await this.mentor.findById(mentorId).populate('skills', 'name') 
     }
 
 }
